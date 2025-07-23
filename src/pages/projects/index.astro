@@ -1,0 +1,29 @@
+---
+import Gallery from '@/components/Gallery';
+import Layout from '@/layouts/Layout.astro';
+import type { ImageEntry } from '@/lib/types';
+
+const imageModules: Record<string, string> = import.meta.glob(
+  '../../images/**/*.{jpg,jpeg,png,webp}',
+  {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  }
+);
+
+let images: ImageEntry[] = [];
+
+for (let path in imageModules) {
+  const projectAndFile = path.split('/images/')[1];
+  images.push({
+    project: projectAndFile.split('/')[0],
+    filename: projectAndFile.split('/')[1],
+    filepath: imageModules[path],
+  });
+}
+---
+
+<Layout>
+  <Gallery client:load images={images} />
+</Layout>

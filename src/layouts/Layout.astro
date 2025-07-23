@@ -1,16 +1,17 @@
 ---
-import NavDrawer from "@/components/NavDrawer";
-import imageList from "@/data/imageList.json";
-import { sanityClient } from "sanity:client";
-import "../styles/global.css";
-import type { Project } from "@/lib/types";
-import TestSheet from "@/components/testSheet";
+import NavDrawer from '@/components/NavDrawer';
+import imageList from '@/data/imageList.json';
+import { sanityClient } from 'sanity:client';
+import '../styles/global.css';
+import type { Project } from '@/lib/types';
 
 const pathname = Astro.url.pathname;
-const imageEntries: [string, string[]][] = Object.entries(imageList);
-const imageArray = imageEntries?.map((a) => a[1]).flatMap((b) => b);
-const slugs = imageEntries?.map((i) => i[0]);
-const firstProject = slugs[0];
+
+// const imageEntries: [string, string[]][] = Object.entries(imageList);
+// const imageArray = imageEntries?.map((a) => a[1]).flatMap((b) => b);
+// const slugs = imageEntries?.map((i) => i[0]);
+// const firstProject = slugs[0];
+
 const projects: Project[] = await sanityClient.fetch(
   `*[_type == "project"]{
     'slug': slug.current, 
@@ -23,38 +24,18 @@ const projects: Project[] = await sanityClient.fetch(
   }`
 );
 
-console.log("projects");
-
-
-const handleClick = () => {
-  console.log("hello from astro comp")
-}
-
 //    const [api, setApi] = useState<CarouselApi>();
 //    const [currentProject, setCurrentProject] = useState<string>(firstProject);
 ---
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <button onclick="handleClick">hey from astro</button>
-    <TestSheet client:load />
-    <NavDrawer
-      client:load
-      projects={projects}
-      imageArray={imageArray}
-      slugs={slugs}
-      pathname={pathname}
-    />
+    <NavDrawer client:load projects={projects} pathname={pathname} />
     <slot />
-    <div>{projects.map((p) => (
-     <p>{p.slug}</p>
-     <p>{p.oppsummering}</p>
-     <p>{p.authors}</p>
-    )
-     )}</div>
   </body>
   <style></style>
 </html>

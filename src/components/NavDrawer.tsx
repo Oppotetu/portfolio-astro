@@ -16,8 +16,8 @@ import type { Project } from '@/lib/types'
 import { Button } from './ui/button'
 
 interface NavDrawerProps {
-  imageArray: string[]
-  slugs: string[]
+  // imageArray: string[]
+  // slugs: string[]
   pathname: string
   projects: Project[]
 }
@@ -29,24 +29,24 @@ export default function NavDrawer(p: NavDrawerProps) {
   const $carouselApi = useStore(carouselApi)
   const $currentProject = useStore(currentProject)
 
-  const scrollTo = (value: string) => {
-    if (!$carouselApi) return
-    const imagePath = p.imageArray.find((i) => i.includes(value))
-    if (!imagePath) return
-    const newIndex = p.imageArray.indexOf(imagePath)
-    api.scrollTo(newIndex)
-  }
+  // const scrollTo = (value: string) => {
+  //   if (!$carouselApi) return
+  //   const imagePath = p.imageArray.find((i) => i.includes(value))
+  //   if (!imagePath) return
+  //   const newIndex = p.imageArray.indexOf(imagePath)
+  //   api.scrollTo(newIndex)
+  // }
 
-  const handleProjectClick = (value: string) => {
-    if (p.pathname !== '/projects') {
-      window.location.href = '/projects'
-      setTimeout(() => scrollTo(value), 3000)
-    } else {
-      scrollTo(value)
-    }
-    currentProject.set(value)
-    setOpenLeft(false)
-  }
+  // const handleProjectClick = (value: string) => {
+  //   if (p.pathname !== '/projects') {
+  //     window.location.href = '/projects'
+  //     setTimeout(() => scrollTo(value), 3000)
+  //   } else {
+  //     scrollTo(value)
+  //   }
+  //   currentProject.set(value)
+  //   setOpenLeft(false)
+  // }
 
   return (
     <>
@@ -78,7 +78,7 @@ export default function NavDrawer(p: NavDrawerProps) {
                 <SheetTitle className="text-left text-xl">INFO</SheetTitle>
               </button> */}
               </li>
-              {p.slugs.map((slug) => (
+              {/* {p.slugs.map((slug) => (
                 <li key={slug} className="py-1.5">
                   <button onClick={() => handleProjectClick(slug)}>
                     <SheetTitle
@@ -90,7 +90,7 @@ export default function NavDrawer(p: NavDrawerProps) {
                     </SheetTitle>
                   </button>
                 </li>
-              ))}
+              ))} */}
             </ul>
           </SheetHeader>
         </SheetContent>

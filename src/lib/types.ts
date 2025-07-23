@@ -8,3 +8,9 @@ export interface Project {
   assignmentType: string;
   // gallery: { ref: string }[];
 }
+
+export interface ImageEntry {
+  project: string;
+  filename: string;
+  filepath: string;
+}
