@@ -1,33 +1,24 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from './ui/sheet'
-import AboutDrawer from './AboutDrawer'
-import { Carousel, type CarouselApi } from './ui/carousel'
-import { useStore } from '@nanostores/react'
-import { carouselApi, currentProject } from '@/lib/store'
-import type { Project } from '@/lib/types'
-import { Button } from './ui/button'
+import { useState } from 'react';
+import { Sheet, SheetContent, SheetHeader, SheetTrigger } from './ui/sheet';
+import AboutDrawer from './AboutDrawer';
+import { type CarouselApi } from './ui/carousel';
+import { useStore } from '@nanostores/react';
+import { carouselApi, currentProject } from '@/lib/store';
+import type { Project } from '@/lib/types';
 
 interface NavDrawerProps {
-  // imageArray: string[]
-  // slugs: string[]
-  pathname: string
-  projects: Project[]
+  pathname: string;
+  projects: Project[];
 }
 
 export default function NavDrawer(p: NavDrawerProps) {
-  const [openLeft, setOpenLeft] = useState(false)
-  const [api, setApi] = useState<CarouselApi>()
+  const [openLeft, setOpenLeft] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
   // const [currentProject, setCurrentProject] = useState<string>(firstProject);
-  const $carouselApi = useStore(carouselApi)
-  const $currentProject = useStore(currentProject)
+  const $carouselApi = useStore(carouselApi);
+  const $currentProject = useStore(currentProject);
 
   // const scrollTo = (value: string) => {
   //   if (!$carouselApi) return
@@ -50,17 +41,15 @@ export default function NavDrawer(p: NavDrawerProps) {
 
   return (
     <>
-      <button onClick={() => console.log('hello from button')}>hey</button>
       <Sheet open={openLeft} onOpenChange={setOpenLeft}>
-        <SheetTrigger asChild>
-          <Button variant="outline">Open</Button>
-          {/* <div
-          className="title title-left title-size flex w-8"
-          aria-hidden={true}
-        >
-          Crakc
-        </div>
-        <h1 className="title title-left title-stroked title-size">Crakc</h1> */}
+        <SheetTrigger className="absolute">
+          <div
+            className="title title-left title-size flex w-8"
+            aria-hidden={true}
+          >
+            Crakc
+          </div>
+          <h1 className="title title-left title-stroked title-size">Crakc</h1>
         </SheetTrigger>
         {/* <SheetTrigger className="inverted-text absolute left-1 top-1 z-30 border-4 p-1 text-3xl md:text-5xl lg:text-7xl">
           JD
@@ -96,5 +85,5 @@ export default function NavDrawer(p: NavDrawerProps) {
         </SheetContent>
       </Sheet>
     </>
-  )
+  );
 }

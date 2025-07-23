@@ -1,6 +1,5 @@
 ---
 import NavDrawer from '@/components/NavDrawer';
-import imageList from '@/data/imageList.json';
 import { sanityClient } from 'sanity:client';
 import '../styles/global.css';
 import type { Project } from '@/lib/types';
@@ -28,7 +27,7 @@ const projects: Project[] = await sanityClient.fetch(
 //    const [currentProject, setCurrentProject] = useState<string>(firstProject);
 ---
 
-<html lang="en">
+<html lang="en" class="m-0 h-full p-0">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,5 +36,4 @@ const projects: Project[] = await sanityClient.fetch(
     <NavDrawer client:load projects={projects} pathname={pathname} />
     <slot />
   </body>
-  <style></style>
 </html>

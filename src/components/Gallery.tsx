@@ -1,5 +1,5 @@
 'use client';
-import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Fragment, useEffect } from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -7,9 +7,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { useStore } from '@nanostores/react';
-import imageList from '../data/imageList.json';
-import { carouselApi, currentProject } from '@/lib/store';
 import type { ImageEntry } from '@/lib/types';
 
 interface GalleryProps {
@@ -17,10 +14,6 @@ interface GalleryProps {
 }
 
 export default function Gallery(p: GalleryProps) {
-  useEffect(() => {
-    console.log('iamges', p.images);
-  }, [p.images]);
-
   //   const $carouselApi = useStore(carouselApi);
   //   const $currentProject = useStore(currentProject);
   //   const currentProjectRef = useRef(currentProject.value);
@@ -68,13 +61,14 @@ export default function Gallery(p: GalleryProps) {
         {p.images.map((image, index) => (
           <CarouselItem
             key={`${image.filepath}-${index}`}
+            id={`#${image.project}-${index}`}
             className="flex justify-center"
           >
             <img
               //   key={`${image.slug}-${index}`}
               src={image.filepath}
               alt={image.filename}
-              className="max-h-screen max-w-screen object-contain"
+              className="max-h-screen object-contain"
             />
           </CarouselItem>
         ))}
