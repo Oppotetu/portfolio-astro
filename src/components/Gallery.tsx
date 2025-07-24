@@ -1,5 +1,3 @@
-'use client';
-import { Fragment, useEffect } from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -7,16 +5,25 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { carouselApi, currentProject } from '@/lib/store';
 import type { ImageEntry } from '@/lib/types';
+import { useStore } from '@nanostores/react';
+import Image from 'astro/components/Image.astro';
+import type { EmblaCarouselType } from 'node_modules/embla-carousel/esm/components/EmblaCarousel';
+import { useEffect, useRef } from 'react';
 
 interface GalleryProps {
   images: ImageEntry[];
 }
 
 export default function Gallery(p: GalleryProps) {
-  //   const $carouselApi = useStore(carouselApi);
-  //   const $currentProject = useStore(currentProject);
-  //   const currentProjectRef = useRef(currentProject.value);
+  const $carouselApi = useStore(carouselApi);
+  const $currentProject = useStore(currentProject);
+  // const currentProjectRef = useRef(currentProject.value);
+
+  useEffect(() => {
+    console.log('carouselApi', $carouselApi);
+  }, [$carouselApi]);
 
   //   useEffect(() => {
   //     currentProjectRef.current = currentProject
@@ -55,8 +62,47 @@ export default function Gallery(p: GalleryProps) {
   //     }
   //   };
 
+  useEffect(() => {
+    if (!$carouselApi || !document) return;
+    document.addEventListener('keydown', handleKeyDown);
+    $carouselApi.on('select', (event) => handleSlideChange(event));
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      $carouselApi.off('select', handleSlideChange);
+    };
+  }, [$carouselApi]);
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (!$carouselApi) return;
+    event.preventDefault();
+    if (event.key === 'ArrowLeft') {
+      $carouselApi.scrollPrev();
+    }
+    if (event.key === 'ArrowRight') {
+      $carouselApi.scrollNext();
+    }
+  };
+
+  const handleSlideChange = (event: EmblaCarouselType) => {
+    if (!$carouselApi) return;
+    console.log('event', event.selectedScrollSnap());
+    // const newCurrentProject =
+    //   imageArray[$carouselApi.selectedScrollSnap()].split('/')[2];
+    // if (
+    //   currentProjectRef.current &&
+    //   newCurrentProject !== currentProjectRef.current
+    // ) {
+    //   setCurrentProject(newCurrentProject);
+    // }
+  };
+
   return (
-    <Carousel>
+    <Carousel
+      setApi={carouselApi.set}
+      opts={{
+        loop: true,
+      }}
+    >
       <CarouselContent>
         {p.images.map((image, index) => (
           <CarouselItem
@@ -65,7 +111,6 @@ export default function Gallery(p: GalleryProps) {
             className="flex justify-center"
           >
             <img
-              //   key={`${image.slug}-${index}`}
               src={image.filepath}
               alt={image.filename}
               className="max-h-screen object-contain"
@@ -73,33 +118,9 @@ export default function Gallery(p: GalleryProps) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="inverted-icon" />
+      <CarouselNext className="inverted-icon" />
     </Carousel>
-
-    // // <Carousel setApi={setApi} >
-    // <Carousel>
-    //   <CarouselContent>
-    //     {imageEntries.map(([folderSlug, images], index) => (
-    //       <Fragment key={folderSlug + index}>
-    //         {images.map((src, index) => (
-    //           <CarouselItem
-    //             key={`${folderSlug}-${src}-${index + 1}`}
-    //             className="flex justify-center"
-    //           >
-    //             <img
-    //               src={src}
-    //               alt={`${folderSlug} ${index + 1}`}
-    //               className="max-h-screen max-w-screen object-contain"
-    //             />
-    //           </CarouselItem>
-    //         ))}
-    //       </Fragment>
-    //     ))}
-    //   </CarouselContent>
-    //   <CarouselPrevious />
-    //   <CarouselNext />
-    // </Carousel>
   );
 }
 

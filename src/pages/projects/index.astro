@@ -2,6 +2,23 @@
 import Gallery from '@/components/Gallery';
 import Layout from '@/layouts/Layout.astro';
 import type { ImageEntry } from '@/lib/types';
+import type { Project } from '@/lib/types';
+import { sanityClient } from 'sanity:client';
+
+const projectParam = Astro.url.searchParams.get('project');
+const imageParam = Astro.url.searchParams.get('image');
+
+let projects: Project[] = await sanityClient.fetch(
+  `*[_type == "project"]{
+    'slug': slug.current, 
+    title, 
+    authors,
+    oppsummering,
+    squareFootage,
+    publisert,
+    assignmentType
+  }`
+);
 
 const imageModules: Record<string, string> = import.meta.glob(
   '../../images/**/*.{jpg,jpeg,png,webp}',
@@ -12,18 +29,40 @@ const imageModules: Record<string, string> = import.meta.glob(
   }
 );
 
-let images: ImageEntry[] = [];
+const imageEntries = Object.entries(imageModules);
 
-for (let path in imageModules) {
+let images: ImageEntry[] = [];
+let projectCounter: string;
+
+for (let i = 0; i < imageEntries.length; i++) {
+  const path = imageEntries[i][0];
+
   const projectAndFile = path.split('/images/')[1];
+  const project = projectAndFile.split('/')[0];
+
+  if (!projectCounter || projectCounter !== project) {
+    projects = projects?.map((p) =>
+      p.slug === project ? { ...p, slideIndexStart: i } : p
+    );
+    projectCounter = project;
+  }
+
+  const projectFromCms = projects?.find((p) => p.slug === project);
   images.push({
-    project: projectAndFile.split('/')[0],
+    project: project,
     filename: projectAndFile.split('/')[1],
     filepath: imageModules[path],
+    carouselIndex: i,
+    // title: projectFromCms?.title,
+    // authors: projectFromCms?.authors,
+    // oppsummering: projectFromCms?.oppsummering,
+    // squareFootage: projectFromCms?.squareFootage,
+    // publisert: projectFromCms?.publisert,
+    // assignmentType: projectFromCms?.assignmentType,
   });
 }
 ---
 
-<Layout>
+<Layout projects={projects}>
   <Gallery client:load images={images} />
 </Layout>

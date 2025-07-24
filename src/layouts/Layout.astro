@@ -1,30 +1,8 @@
 ---
 import NavDrawer from '@/components/NavDrawer';
-import { sanityClient } from 'sanity:client';
 import '../styles/global.css';
-import type { Project } from '@/lib/types';
 
-const pathname = Astro.url.pathname;
-
-// const imageEntries: [string, string[]][] = Object.entries(imageList);
-// const imageArray = imageEntries?.map((a) => a[1]).flatMap((b) => b);
-// const slugs = imageEntries?.map((i) => i[0]);
-// const firstProject = slugs[0];
-
-const projects: Project[] = await sanityClient.fetch(
-  `*[_type == "project"]{
-    'slug': slug.current, 
-    title, 
-    authors,
-    oppsummering,
-    squareFootage,
-    publisert,
-    assignmentType
-  }`
-);
-
-//    const [api, setApi] = useState<CarouselApi>();
-//    const [currentProject, setCurrentProject] = useState<string>(firstProject);
+const { projects } = Astro.props;
 ---
 
 <html lang="en" class="m-0 h-full p-0">
@@ -33,7 +11,7 @@ const projects: Project[] = await sanityClient.fetch(
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <NavDrawer client:load projects={projects} pathname={pathname} />
+    <NavDrawer client:load projects={projects} />
     <slot />
   </body>
 </html>

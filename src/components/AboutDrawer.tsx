@@ -4,7 +4,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
+} from './ui/sheet';
 
 const AboutDrawer = () => {
   // const [openRight, setOpenRight] = useState(false);
@@ -12,7 +12,7 @@ const AboutDrawer = () => {
     // <Sheet open={openRight} onOpenChange={setOpenRight}>
     <Sheet>
       <SheetTrigger>
-        <SheetTitle className="text-left text-xl">INFO</SheetTitle>
+        <SheetTitle className="text-xl">About this project</SheetTitle>
       </SheetTrigger>
       <SheetContent
         // className="w-[40%] overflow-auto sm:max-w-[40%]"

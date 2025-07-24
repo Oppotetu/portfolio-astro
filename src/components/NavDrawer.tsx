@@ -1,22 +1,22 @@
-'use client';
-
 import { useState } from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from './ui/sheet';
-import AboutDrawer from './AboutDrawer';
-import { type CarouselApi } from './ui/carousel';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from './ui/sheet';
 import { useStore } from '@nanostores/react';
 import { carouselApi, currentProject } from '@/lib/store';
 import type { Project } from '@/lib/types';
+import AboutDrawer from './AboutDrawer';
 
 interface NavDrawerProps {
-  pathname: string;
   projects: Project[];
 }
 
 export default function NavDrawer(p: NavDrawerProps) {
   const [openLeft, setOpenLeft] = useState(false);
-  const [api, setApi] = useState<CarouselApi>();
-  // const [currentProject, setCurrentProject] = useState<string>(firstProject);
   const $carouselApi = useStore(carouselApi);
   const $currentProject = useStore(currentProject);
 
@@ -39,51 +39,72 @@ export default function NavDrawer(p: NavDrawerProps) {
   //   setOpenLeft(false)
   // }
 
+  const handleProjectClick = (project: Project) => {
+    if (!$carouselApi || project.slideIndexStart === undefined) return;
+    setOpenLeft(false);
+    $carouselApi.scrollTo(project.slideIndexStart);
+  };
+
   return (
-    <>
-      <Sheet open={openLeft} onOpenChange={setOpenLeft}>
-        <SheetTrigger className="absolute">
-          <div
-            className="title title-left title-size flex w-8"
-            aria-hidden={true}
-          >
-            Crakc
-          </div>
-          <h1 className="title title-left title-stroked title-size">Crakc</h1>
-        </SheetTrigger>
-        {/* <SheetTrigger className="inverted-text absolute left-1 top-1 z-30 border-4 p-1 text-3xl md:text-5xl lg:text-7xl">
-          JD
-        </SheetTrigger> */}
-        <SheetContent
-          side="left"
-          // className="w-[40%] overflow-auto sm:max-w-[40%]"
-          aria-describedby={undefined}
+    <Sheet open={openLeft} onOpenChange={setOpenLeft}>
+      <SheetTrigger className="absolute">
+        <div
+          className="inverted-text title title-left title-size z-30"
+          aria-hidden={true}
         >
-          <SheetHeader>
-            <ul className="pt-2">
-              <li className="py-1.5">
-                <AboutDrawer />
-                {/* <button onClick={() => handleLinkClick("about")}>
-                <SheetTitle className="text-left text-xl">INFO</SheetTitle>
-              </button> */}
+          Crakc
+        </div>
+        <h1 className="title title-left title-stroked title-size z-40">
+          Crakc
+        </h1>
+      </SheetTrigger>
+      <SheetContent
+        side="left"
+        className="border-r-primary border-r-1"
+        // className="w-[40%] overflow-auto sm:max-w-[40%]"
+        aria-describedby={undefined}
+      >
+        <SheetHeader className="mt-8 pr-0">
+          <ul className="">
+            <li className="border-y-primary border-y-1 pt-0.5 pb-2">
+              <a href="/about">
+                <SheetTitle className="text-xl">About me</SheetTitle>
+              </a>
+            </li>
+            <li className="pt-0.5 pb-2">
+              <AboutDrawer />
+            </li>
+          </ul>
+          <ul className="mt-4">
+            <li className="border-y-primary border-y-1 pt-0.5 pb-2">
+              <SheetTitle className="text-xl">Projects</SheetTitle>
+            </li>
+            {p.projects.map((project) => (
+              <li
+                key={project.slug}
+                className="border-b-primary border-b-1 pt-0.5 pb-2 pl-4"
+              >
+                {/* <button onClick={() => handleProjectClick(project)}> */}
+                <button
+                  onClick={() => handleProjectClick(project)}
+                  className="cursor-pointer"
+                >
+                  <SheetTitle
+                    className={`text-left text-xl ${
+                      $currentProject === project.slug
+                        ? 'text-slate-500'
+                        : 'black'
+                    }`}
+                  >
+                    {/* {p.projects?.find((p) => p.projects === project)?.title} */}
+                    {project.title}
+                  </SheetTitle>
+                </button>
               </li>
-              {/* {p.slugs.map((slug) => (
-                <li key={slug} className="py-1.5">
-                  <button onClick={() => handleProjectClick(slug)}>
-                    <SheetTitle
-                      className={`text-left text-xl ${
-                        $currentProject === slug ? 'text-slate-500' : 'black'
-                      }`}
-                    >
-                      {p.projects?.find((p) => p.slug === slug)?.title}
-                    </SheetTitle>
-                  </button>
-                </li>
-              ))} */}
-            </ul>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
-    </>
+            ))}
+          </ul>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
   );
 }

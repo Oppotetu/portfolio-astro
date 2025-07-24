@@ -1,3 +1,5 @@
+type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [P in K]?: T[P] };
+
 export interface Project {
   slug: string;
   title: string;
@@ -6,11 +8,13 @@ export interface Project {
   squareFootage: number;
   publisert: string;
   assignmentType: string;
-  // gallery: { ref: string }[];
+  slideIndexStart?: number;
 }
 
+// export interface ImageEntry extends Omit<Project, 'slug'> {
 export interface ImageEntry {
   project: string;
   filename: string;
   filepath: string;
+  carouselIndex: number;
 }

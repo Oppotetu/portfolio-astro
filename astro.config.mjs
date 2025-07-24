@@ -1,8 +1,9 @@
 // @ts-check
-import { defineConfig } from 'astro/config'
-import react from '@astrojs/react'
-import tailwindcss from '@tailwindcss/vite'
-import sanity from '@sanity/astro'
+import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import tailwindcss from '@tailwindcss/vite';
+import sanity from '@sanity/astro';
+import vercelStatic from '@astrojs/vercel/static';
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,7 +17,13 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  output: 'static',
+  adapter: vercelStatic({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
   redirects: {
     '/': '/projects',
   },
-})
+});

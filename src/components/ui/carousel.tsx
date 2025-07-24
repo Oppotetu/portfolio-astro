@@ -183,7 +183,7 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        'absolute h-16 w-16 rounded-full',
+        'absolute h-16 w-16 cursor-pointer rounded-full',
         orientation === 'horizontal'
           ? '-bottom-4 left-4 -translate-y-1/2'
           : 'top-4 left-1/2 -translate-x-1/2 rotate-90',
@@ -213,7 +213,7 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        'absolute h-16 w-16 rounded-full',
+        'absolute h-16 w-16 cursor-pointer rounded-full',
         orientation === 'horizontal'
           ? 'right-4 -bottom-4 -translate-y-1/2'
           : 'bottom-4 left-1/2 -translate-x-1/2 rotate-90',

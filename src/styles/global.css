@@ -110,17 +110,6 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
-@layer components {
-  .title {
-    /* color: rgb(100 116 139 / var(--tw-bg-opacity, 1)); */
-    color: #000;
-    line-height: 1;
-    position: absolute;
-    cursor: pointer;
-    /* z-index: -1; */
-  }
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -201,6 +190,17 @@
   }
 }
 
+@layer components {
+  .title {
+    /* color: rgb(100 116 139 / var(--tw-bg-opacity, 1)); */
+    color: #000;
+    line-height: 1;
+    position: absolute;
+    cursor: pointer;
+    /* z-index: -1; */
+  }
+}
+
 @layer utilities {
   .title-size {
     font-size: 3rem; /* text-5xl */
@@ -216,21 +216,20 @@
 
   .title-left {
     top: 2px;
-    left: 8px;
+    left: 0.25rem;
   }
 
   .title-right {
     top: 2px;
-    right: 8px;
+    right: 0.25rem;
   }
 
   .title-stroked {
     color: transparent;
-    -webkit-text-stroke: 2px #000;
-    text-stroke: 2px #000;
+    -webkit-text-stroke: 1px #000;
+    text-stroke: 1px #000;
     /* -webkit-text-stroke: 2px rgb(100 116 139 / var(--tw-bg-opacity, 1));
     text-stroke: 2px rgb(100 116 139 / var(--tw-bg-opacity, 1)); */
-    z-index: 3;
   }
 
   .drawer-width {
@@ -240,6 +239,11 @@
     @media (min-width: 640px) {
       max-width: 25%;
     }
+  }
+
+  .inverted-icon {
+    background-color: white;
+    mix-blend-mode: difference;
   }
 
   .inverted-text {
