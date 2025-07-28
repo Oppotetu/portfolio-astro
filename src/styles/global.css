@@ -194,7 +194,7 @@
   .title {
     /* color: rgb(100 116 139 / var(--tw-bg-opacity, 1)); */
     color: #000;
-    line-height: 1;
+    /* line-height: 1.1; */
     position: absolute;
     cursor: pointer;
     /* z-index: -1; */
@@ -202,6 +202,11 @@
 }
 
 @layer utilities {
+  .row-height {
+    padding-bottom: 1rem;
+    padding-top: 0.1rem;
+  }
+
   .title-size {
     font-size: 3rem; /* text-5xl */
 
@@ -215,7 +220,7 @@
   }
 
   .title-left {
-    top: 2px;
+    top: -16px;
     left: 0.25rem;
   }
 
@@ -296,4 +301,33 @@
     border: 2px solid red;
     position: relative;
   }
+
+  /* .embla__nav {
+    position: absolute;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+
+  .embla__nav__button {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+
+  .embla__nav__button:hover:not(:disabled) {
+    background: #555;
+  }
+
+  .embla__nav__button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  } */
 }

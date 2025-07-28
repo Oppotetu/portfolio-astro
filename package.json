@@ -7,7 +7,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate:images": "node scripts/generateImageList.js"
+    "generate-images": "node scripts/generateImageList.js",
+    "optimize-images": "node scripts/optimizeImages.js"
   },
   "dependencies": {
     "@astrojs/react": "^4.3.0",
@@ -16,13 +17,14 @@
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
     "@sanity/astro": "^3.2.10",
-    "@sanity/client": "^7.8.0",
+    "@sanity/client": "^7.8.1",
     "@tailwindcss/vite": "^4.1.11",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "astro": "^5.12.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^0.525.0",
     "nanostores": "^1.0.1",
@@ -31,6 +33,7 @@
     "react-is": "^19.1.0",
     "sanity": "^4.0.1",
     "styled-components": "^6.1.19",
+    "swiper": "^11.2.10",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11"
   },

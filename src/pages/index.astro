@@ -1,12 +1,9 @@
 ---
-import Gallery from '@/components/Gallery';
+import Gallery from '@/components/Gallery.astro';
 import Layout from '@/layouts/Layout.astro';
 import type { ImageEntry } from '@/lib/types';
 import type { Project } from '@/lib/types';
 import { sanityClient } from 'sanity:client';
-
-const projectParam = Astro.url.searchParams.get('project');
-const imageParam = Astro.url.searchParams.get('image');
 
 let projects: Project[] = await sanityClient.fetch(
   `*[_type == "project"]{
@@ -21,7 +18,7 @@ let projects: Project[] = await sanityClient.fetch(
 );
 
 const imageModules: Record<string, string> = import.meta.glob(
-  '../../images/**/*.{jpg,jpeg,png,webp}',
+  '../images/**/*.{jpg,jpeg,png,webp}',
   {
     eager: true,
     query: '?url',
@@ -63,6 +60,23 @@ for (let i = 0; i < imageEntries.length; i++) {
 }
 ---
 
+<script>
+  import type { Project } from '@/lib/types';
+  import { sanityClient } from 'sanity:client';
+
+  let projects: Project[] = await sanityClient.fetch(
+    `*[_type == "project"]{
+    'slug': slug.current, 
+    title, 
+    authors,
+    oppsummering,
+    squareFootage,
+    publisert,
+    assignmentType
+  }`
+  );
+</script>
+
 <Layout projects={projects}>
-  <Gallery client:load images={images} />
+  <Gallery images={images} />
 </Layout>

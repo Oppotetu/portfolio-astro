@@ -1,0 +1,38 @@
+---
+import type { ImageEntry } from '@/lib/types';
+import { Image } from 'astro:assets';
+import GalleryNav from './GalleryNav';
+import { imageConfig } from 'astro:assets';
+
+interface Props {
+  images: ImageEntry[];
+}
+
+const { images } = Astro.props;
+
+const projectParam = Astro.url.searchParams.get('project');
+const imageParam = Astro.url.searchParams.get('image');
+---
+
+<div class="swiper h-screen">
+  <div class="swiper-wrapper">
+    {
+      images.map((image, index) => (
+        <Image
+          id={`#${image.project}-${index}`}
+          src={image.filepath}
+          alt={image.filename}
+          width={1920}
+          height={1080}
+          class:list="swiper-slide max-w-screen max-h-screen w-auto h-auto object-contain"
+        />
+      ))
+    }
+  </div>
+
+  <GalleryNav
+    client:only="react"
+    projectParam={projectParam}
+    imageParam={imageParam}
+  />
+</div>

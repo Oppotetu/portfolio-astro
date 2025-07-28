@@ -1,19 +1,27 @@
 import { useState, type Dispatch, type SetStateAction } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from './ui/sheet';
 import TableList from './TableList';
+import type { Project } from '@/lib/types';
 
-interface AboutDrawerProps {
-  openAbout?: boolean;
-  setOpenAbout?: Dispatch<SetStateAction<boolean>>;
+interface ProjectInfoDrawerProps {
+  project: Project;
+  includeTrigger?: boolean;
+  openProject?: boolean;
+  setOpenProject?: Dispatch<SetStateAction<boolean>>;
 }
 
-const AboutDrawer = (p: AboutDrawerProps) => {
-  const [openAbout, setOpenAbout] = useState(false);
+const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
+  const [openProject, setOpenProject] = useState(false);
   return (
     <Sheet
-      open={p.openAbout ?? openAbout}
-      onOpenChange={p.setOpenAbout ?? setOpenAbout}
+      open={p.openProject ?? openProject}
+      onOpenChange={p.setOpenProject ?? setOpenProject}
     >
+      {p.includeTrigger && (
+        <SheetTrigger className="absolute right-2 z-30" asChild>
+          <button className="title-size text-xl">+</button>
+        </SheetTrigger>
+      )}
       <SheetContent
         // className="w-[60%] overflow-auto sm:max-w-[60%]"
         side="right"
@@ -34,4 +42,4 @@ const AboutDrawer = (p: AboutDrawerProps) => {
     </Sheet>
   );
 };
-export default AboutDrawer;
+export default ProjectInfoDrawer;
