@@ -54,8 +54,9 @@ export const projectType = defineType({
     defineField({
       name: 'publishedAt',
       title: 'Publisert',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
+      type: 'number',
+      validation: (rule) => rule.integer().greaterThan(0).lessThan(9999),
+      initialValue: () => new Date().getFullYear(),
     }),
     defineField({
       name: 'summary',

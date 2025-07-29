@@ -22,6 +22,7 @@ export default {
               description: 'Bruk små bokstaver og bindestrek i stedet for mellomrom',
               validation: (rule: Rule) =>
                 rule
+                  .required()
                   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
                     name: 'slug',
                     invert: false,
