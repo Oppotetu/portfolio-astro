@@ -52,8 +52,8 @@ export const projectType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'publishedAt',
-      title: 'Publisert',
+      name: 'publishedYear',
+      title: 'Publiseringsår',
       type: 'number',
       validation: (rule) => rule.integer().greaterThan(0).lessThan(9999),
       initialValue: () => new Date().getFullYear(),

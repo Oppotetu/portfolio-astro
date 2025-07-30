@@ -11,10 +11,17 @@ export interface Project {
   slideIndexStart?: number;
 }
 
+export interface FilePaths {
+  w844?: string;
+  w1024?: string;
+  w1600?: string;
+  w2560?: string;
+}
+
 // export interface ImageEntry extends Omit<Project, 'slug'> {
 export interface ImageEntry {
   project: string;
   filename: string;
-  filepath: string;
+  filePaths: FilePaths;
   carouselIndex: number;
 }

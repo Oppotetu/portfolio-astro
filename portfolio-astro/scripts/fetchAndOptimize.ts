@@ -1,7 +1,7 @@
-import { createClient } from '@sanity/client';
-import fs from 'fs';
-import path from 'path';
-import sharp from 'sharp';
+import { createClient } from "@sanity/client";
+import fs from "fs";
+import path from "path";
+import sharp from "sharp";
 
 interface ImageResult {
   url: string;
@@ -13,17 +13,21 @@ interface ProjectImages {
   project: string;
 }
 
-const RAW_DIR = './raw-images';
-const OUTPUT_DIR = './src/images';
-const MAX_WIDTH = 2560;
-const MAX_HEIGHT = 1440;
+const RAW_DIR = "./raw-images";
+const OUTPUT_DIR = "./src/images";
+const DIMENSTIONS: { width: number; height: number }[] = [
+  { width: 844, height: 844 },
+  { width: 1024, height: 844 },
+  { width: 1600, height: 900 },
+  { width: 2560, height: 1440 },
+];
 const QUALITY = 80;
 
 const client = createClient({
-  projectId: 's0d0t3an',
-  dataset: 'production',
+  projectId: "s0d0t3an",
+  dataset: "production",
   useCdn: true,
-  apiVersion: '2025-07-25',
+  apiVersion: "2025-07-25",
 });
 
 async function getImages(): Promise<ProjectImages[]> {
@@ -49,24 +53,36 @@ async function downloadImage(url: string, outputPath: string) {
   fs.writeFileSync(outputPath, Buffer.from(buffer));
 }
 
-async function optimizeImage(inputPath: string, outputPath: string) {
-  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+async function optimizeImage(
+  inputPath: string,
+  outDir: string,
+  imageAlt: string,
+) {
+  fs.mkdirSync(outDir, { recursive: true });
 
   const meta = await sharp(inputPath).metadata();
-  const portrait = (meta.height ?? 0) > (meta.width ?? 0);
+  const isPortrait = (meta.height ?? 0) > (meta.width ?? 0);
 
-  const size = portrait ? { height: MAX_HEIGHT } : { width: MAX_WIDTH };
+  const generated: { path: string; width: number }[] = [];
 
-  await sharp(inputPath)
-    .resize({ ...size, fit: 'inside', withoutEnlargement: true })
-    .webp({ quality: QUALITY })
-    .toFile(outputPath);
+  for (const dim of DIMENSTIONS) {
+    const outPath = path.join(outDir, `${imageAlt}-w${dim.width}.webp`);
+    const size = isPortrait ? { height: dim.height } : { width: dim.width };
+
+    await sharp(inputPath)
+      .resize({ ...size, fit: "inside", withoutEnlargement: true })
+      .webp({ quality: QUALITY })
+      .toFile(outPath);
+
+    generated.push({ path: outPath, width: dim.width });
+  }
+  return generated;
 }
 
 async function run() {
   fs.rmSync(OUTPUT_DIR, { recursive: true, force: true });
   fs.rmSync(RAW_DIR, { recursive: true, force: true });
-  console.log('✔ Purged raw and output directories');
+  console.log("✔ Purged raw and output directories");
 
   fs.mkdirSync(RAW_DIR, { recursive: true });
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
@@ -76,22 +92,25 @@ async function run() {
   for (const array of imageArrays) {
     for (const image of array.images) {
       const filename = path.basename(new URL(image.url).pathname);
-      const baseName = path.parse(filename).name;
       const rawPath = path.join(RAW_DIR, filename);
-      const outPath = path.join(
-        `${OUTPUT_DIR}/${array.project}`,
-        image.alt + '.webp',
-      );
 
       try {
         await downloadImage(image.url, rawPath);
-        await optimizeImage(rawPath, outPath);
-        console.log(`✔ Processed ${filename}`);
+        const variants = await optimizeImage(
+          rawPath,
+          `${OUTPUT_DIR}/${array.project}`,
+          image.alt,
+        );
+        console.log(
+          `✔ Processed ${filename} → ${variants.map((v) => path.basename(v.path)).join(", ")}`,
+        );
       } catch (error) {
         console.error(`✘ Failed to process ${filename}:`, error);
       }
     }
   }
+  fs.rmSync(RAW_DIR, { recursive: true, force: true });
+  console.log("✔ Purged raw image directory");
 }
 
 run();

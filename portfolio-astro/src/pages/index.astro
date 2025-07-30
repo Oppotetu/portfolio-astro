@@ -1,9 +1,10 @@
 ---
-import Gallery from '@/components/Gallery.astro';
-import Layout from '@/layouts/Layout.astro';
-import type { ImageEntry } from '@/lib/types';
-import type { Project } from '@/lib/types';
-import { sanityClient } from 'sanity:client';
+import Gallery from "@/components/Gallery.astro";
+import GalleryClient from "@/components/GalleryClient";
+import Layout from "@/layouts/Layout.astro";
+import type { FilePaths, ImageEntry } from "@/lib/types";
+import type { Project } from "@/lib/types";
+import { sanityClient } from "sanity:client";
 
 let projects: Project[] = await sanityClient.fetch(
   `*[_type == "project"]{
@@ -18,65 +19,77 @@ let projects: Project[] = await sanityClient.fetch(
 );
 
 const imageModules: Record<string, string> = import.meta.glob(
-  '../images/**/*.{jpg,jpeg,png,webp}',
+  "../images/**/*.{jpg,jpeg,png,webp}",
   {
     eager: true,
-    query: '?url',
-    import: 'default',
+    query: "?url",
+    import: "default",
   }
 );
 
 const imageEntries = Object.entries(imageModules);
 
 let images: ImageEntry[] = [];
-let projectCounter: string;
+let currentProject: string;
+let imageNameArray: { name: string; project: string }[] = [];
+let currentImage: string;
 
-for (let i = 0; i < imageEntries.length; i++) {
-  const path = imageEntries[i][0];
+for (const entry of imageEntries) {
+  const path = entry[0];
+  const projectAndFile = path.split("/images/")[1];
+  const project = projectAndFile.split("/")[0];
+  const basename = path.slice(path.lastIndexOf("/") + 1, path.lastIndexOf("-"));
+  if (currentImage !== basename) {
+    imageNameArray.push({ name: basename, project: project });
+    currentImage = basename;
+  }
+}
 
-  const projectAndFile = path.split('/images/')[1];
-  const project = projectAndFile.split('/')[0];
+for (let i = 0; i < imageNameArray.length; i++) {
+  const project = imageNameArray[i].project;
+  const basename = imageNameArray[i].name;
 
-  if (!projectCounter || projectCounter !== project) {
+  let imageVariants: FilePaths = {};
+  imageEntries.map((entry) => {
+    const path = entry[0];
+    const projectAndFile = path.split("/images/")[1];
+    const projectEntry = projectAndFile.split("/")[0];
+    const basenameEntry = path.slice(
+      path.lastIndexOf("/") + 1,
+      path.lastIndexOf("-")
+    );
+    if (projectEntry === project && basenameEntry === basename) {
+      const variant = path.slice(
+        path.lastIndexOf("-") + 1,
+        path.lastIndexOf(".")
+      );
+      Object.assign(imageVariants, { [variant]: imageModules[path] });
+    }
+  });
+
+  if (currentProject !== project) {
     projects = projects?.map((p) =>
       p.slug === project ? { ...p, slideIndexStart: i } : p
     );
-    projectCounter = project;
+    currentProject = project;
   }
 
-  const projectFromCms = projects?.find((p) => p.slug === project);
   images.push({
     project: project,
-    filename: projectAndFile.split('/')[1],
-    filepath: imageModules[path],
+    filename: basename,
+    filePaths: imageVariants,
     carouselIndex: i,
-    // title: projectFromCms?.title,
-    // authors: projectFromCms?.authors,
-    // oppsummering: projectFromCms?.oppsummering,
-    // squareFootage: projectFromCms?.squareFootage,
-    // publisert: projectFromCms?.publisert,
-    // assignmentType: projectFromCms?.assignmentType,
   });
+
+  projects = projects.sort((a, b) => a.slideIndexStart - b.slideIndexStart);
 }
 ---
 
-<script>
-  import type { Project } from '@/lib/types';
-  import { sanityClient } from 'sanity:client';
-
-  let projects: Project[] = await sanityClient.fetch(
-    `*[_type == "project"]{
-    'slug': slug.current, 
-    title, 
-    authors,
-    oppsummering,
-    squareFootage,
-    publisert,
-    assignmentType
-  }`
-  );
-</script>
-
+<!-- {
+  projects.map((i) => (
+    <p>{`${i.slideIndexStart ?? "no index"} / ${i.slug}`} </p>
+  ))
+} -->
 <Layout projects={projects}>
-  <Gallery images={images} />
+  <GalleryClient client:only="react" images={images} />
 </Layout>

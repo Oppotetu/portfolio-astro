@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import Swiper from 'swiper';
-import 'swiper/css';
-import { Button } from './ui/button';
-import { cn } from '@/lib/utils';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useStore } from '@nanostores/react';
-import { swiperApi } from '@/lib/store';
+import { useEffect } from "react";
+import Swiper from "swiper";
+import "swiper/css";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useStore } from "@nanostores/react";
+import { swiperApi } from "@/lib/store";
 
 interface GalleryNavProps {
   projectParam: string;
@@ -18,7 +18,7 @@ const GalleryNav = (p: GalleryNavProps) => {
   useEffect(() => {
     if (!document) return;
     swiperApi.set(
-      new Swiper('.swiper', {
+      new Swiper(".swiper", {
         centeredSlides: true,
       }),
     );
@@ -28,28 +28,23 @@ const GalleryNav = (p: GalleryNavProps) => {
 
   useEffect(() => {
     if (!$swiperApi || !document) return;
-    document.addEventListener('keydown', handleKeyDown);
-    $swiperApi.on('slideChange', (event) => handleSlideChange(event));
+    document.addEventListener("keydown", handleKeyDown);
+    // $swiperApi.on("slideChange", (event) => handleSlideChange(event));
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      $swiperApi.off('slideChange', handleSlideChange);
+      document.removeEventListener("keydown", handleKeyDown);
+      // $swiperApi.off("slideChange", handleSlideChange);
     };
   }, [$swiperApi]);
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (!$swiperApi) return;
     event.preventDefault();
-    if (event.key === 'ArrowLeft') {
+    if (event.key === "ArrowLeft") {
       $swiperApi.slidePrev();
     }
-    if (event.key === 'ArrowRight') {
+    if (event.key === "ArrowRight") {
       $swiperApi.slideNext();
     }
-  };
-
-  const handleSlideChange = (event) => {
-    if (!$swiperApi) return;
-    console.log('event', event.selectedScrollSnap());
   };
 
   const scrollPrev = () => {
@@ -67,7 +62,7 @@ const GalleryNav = (p: GalleryNavProps) => {
       <Button
         data-slot="swiper-button-prev"
         className={cn(
-          'inverted-icon absolute -bottom-4 left-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full',
+          "inverted-icon absolute -bottom-4 left-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full",
         )}
         onClick={scrollPrev}
       >
@@ -79,7 +74,7 @@ const GalleryNav = (p: GalleryNavProps) => {
       <Button
         data-slot="swiper-button-next"
         className={cn(
-          'inverted-icon absolute right-4 -bottom-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full',
+          "inverted-icon absolute right-4 -bottom-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full",
         )}
         onClick={scrollNext}
       >
