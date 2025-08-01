@@ -15,7 +15,7 @@ const getSrcSet = (image: ImageEntry) =>
   `${image.filePaths.w844} 844w, ${image.filePaths.w1024} 1024w, ${image.filePaths.w1600} 1600w, ${image.filePaths.w2560} 2560w`;
 ---
 
-<div class="swiper h-screen">
+<div class="swiper">
   <div class="swiper-wrapper">
     {
       images.map((image, index) => (
@@ -23,18 +23,10 @@ const getSrcSet = (image: ImageEntry) =>
           id={`#${image.project}-${index}`}
           srcset={getSrcSet(image)}
           sizes="100vw"
-          src={image.filePaths.w1600}
+          src={image.filePaths.w1024}
           alt={image.filename}
-          class="swiper-slide max-w-screen max-h-screen w-auto h-auto object-contain"
+          class="swiper-slide w-auto h-auto object-contain"
         />
-        // <Image
-        //   id={`#${image.project}-${index}`}
-        //   // src={image.filepath}
-        //   alt={image.filename}
-        //   width={1920}
-        //   height={1080}
-        //   class:list="swiper-slide max-w-screen max-h-screen w-auto h-auto object-contain"
-        // />
       ))
     }
   </div>
