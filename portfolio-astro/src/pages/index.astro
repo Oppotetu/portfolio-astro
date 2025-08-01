@@ -5,6 +5,7 @@ import Layout from "@/layouts/Layout.astro";
 import type { FilePaths, ImageEntry } from "@/lib/types";
 import type { Project } from "@/lib/types";
 import { sanityClient } from "sanity:client";
+import imageOrder from '../lib/image-order.json'
 
 let projects: Project[] = await sanityClient.fetch(
   `*[_type == "project"]{
@@ -85,11 +86,6 @@ for (let i = 0; i < imageNameArray.length; i++) {
 }
 ---
 
-<!-- {
-  projects.map((i) => (
-    <p>{`${i.slideIndexStart ?? "no index"} / ${i.slug}`} </p>
-  ))
-} -->
 <Layout projects={projects}>
   <GalleryClient client:only="react" images={images} />
 </Layout>

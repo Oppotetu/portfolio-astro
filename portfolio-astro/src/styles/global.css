@@ -144,6 +144,8 @@
     -webkit-font-smoothing: antialiased;
     font-family: Helvetica, Arial, sans-serif;
     position: relative;
+    height: 100vh;
+    height: 100svh;
   }
 
   img,
@@ -192,12 +194,9 @@
 
 @layer components {
   .title {
-    /* color: rgb(100 116 139 / var(--tw-bg-opacity, 1)); */
     color: #000;
-    /* line-height: 1.1; */
     position: absolute;
     cursor: pointer;
-    /* z-index: -1; */
   }
 }
 
@@ -258,7 +257,6 @@
     background-color: white;
     mix-blend-mode: difference;
     position: absolute;
-    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
     text-align: center;
     text-justify: center;
   }

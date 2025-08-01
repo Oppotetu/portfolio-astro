@@ -1,0 +1,68 @@
+{
+  "321-solo-house": [
+    "solo-house-01",
+    "view-01-red",
+    "view-02-red",
+    "situation-500-red",
+    "section-aa-100-02-red",
+    "plan-01-100",
+    "plan-02-100"
+  ],
+  "106-preikestolen": [
+    "besoekssenter-02",
+    "snitt-b-1-500",
+    "fasade-oest-1-500",
+    "plan-1-et-1-140",
+    "plan-2-et-1-140",
+    "site-plan-1-1000"
+  ],
+  "320-atelier-de-vylder-vinck-taillieu": [
+    "painting-dunes",
+    "painting-forest",
+    "dune-axo-red",
+    "dune-plan",
+    "dune-section",
+    "forest-axo-red",
+    "forest-elevation",
+    "forest-plan"
+  ],
+  "105-haslum-krematorium": [
+    "haslum-krematorium-01",
+    "haslum-krematorium-02",
+    "haslum-krematorium-03",
+    "haslum-krematorium-04"
+  ],
+  "322-church": [
+    "site-model-01",
+    "church-space-light",
+    "section-aa-100",
+    "section-typical-75",
+    "plan-01",
+    "site",
+    "draft"
+  ],
+  "323-the-arcade": [
+    "model-photo-21",
+    "site-a0-6000",
+    "section-aa-a2-v1",
+    "diagram",
+    "plan-00-a1"
+  ],
+  "104-kiosk-buerkliplatz": [
+    "illustration-01",
+    "site-sections",
+    "sections",
+    "stadthausanlage-sitepl",
+    "elevation-east",
+    "elevation-west",
+    "plan-01",
+    "plan-02"
+  ],
+  "things-we-won-in-the-fire-gallery-zwart-huis": [
+    "things-we-won-01",
+    "things-we-won-02",
+    "things-we-won-03",
+    "things-we-won-04",
+    "things-we-won-05"
+  ]
+}
