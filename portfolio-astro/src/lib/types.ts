@@ -8,7 +8,7 @@ export interface Project {
   squareFootage: number;
   publisert: string;
   assignmentType: string;
-  slideIndexStart?: number;
+  carouselIndexStart?: number;
 }
 
 export interface FilePaths {

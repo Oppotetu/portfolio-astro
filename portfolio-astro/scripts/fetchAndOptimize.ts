@@ -31,7 +31,7 @@ const client = createClient({
 });
 
 async function getImages(): Promise<ProjectImages[]> {
-  const query = `*[_type == "project"]{
+  const query = `*[_type == "project"] | order(slug.current asc){
     'images': images.images[]{
       'url': asset -> url,
       'alt': alt

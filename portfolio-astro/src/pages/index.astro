@@ -1,14 +1,13 @@
 ---
-import Gallery from "@/components/Gallery.astro";
-import GalleryClient from "@/components/GalleryClient";
-import Layout from "@/layouts/Layout.astro";
-import type { FilePaths, ImageEntry } from "@/lib/types";
-import type { Project } from "@/lib/types";
-import { sanityClient } from "sanity:client";
-import imageOrder from '../lib/image-order.json'
+import GalleryClient from '@/components/GalleryClient';
+import Layout from '@/layouts/Layout.astro';
+import type { FilePaths, ImageEntry } from '@/lib/types';
+import type { Project } from '@/lib/types';
+import { sanityClient } from 'sanity:client';
+import imageOrder from '../lib/image-order.json';
 
 let projects: Project[] = await sanityClient.fetch(
-  `*[_type == "project"]{
+  `*[_type == "project"] | order(slug.current asc){
     'slug': slug.current, 
     title, 
     authors,
@@ -20,72 +19,135 @@ let projects: Project[] = await sanityClient.fetch(
 );
 
 const imageModules: Record<string, string> = import.meta.glob(
-  "../images/**/*.{jpg,jpeg,png,webp}",
+  '../images/**/*.{jpg,jpeg,png,webp}',
   {
     eager: true,
-    query: "?url",
-    import: "default",
+    query: '?url',
+    import: 'default',
   }
 );
 
 const imageEntries = Object.entries(imageModules);
 
 let images: ImageEntry[] = [];
+let carouselIndex = 0;
 let currentProject: string;
-let imageNameArray: { name: string; project: string }[] = [];
-let currentImage: string;
 
-for (const entry of imageEntries) {
-  const path = entry[0];
-  const projectAndFile = path.split("/images/")[1];
-  const project = projectAndFile.split("/")[0];
-  const basename = path.slice(path.lastIndexOf("/") + 1, path.lastIndexOf("-"));
-  if (currentImage !== basename) {
-    imageNameArray.push({ name: basename, project: project });
-    currentImage = basename;
-  }
-}
+for (const [project, orderedNames] of Object.entries(imageOrder)) {
+  for (const basename of orderedNames) {
+    let imageVariants: FilePaths = {};
 
-for (let i = 0; i < imageNameArray.length; i++) {
-  const project = imageNameArray[i].project;
-  const basename = imageNameArray[i].name;
-
-  let imageVariants: FilePaths = {};
-  imageEntries.map((entry) => {
-    const path = entry[0];
-    const projectAndFile = path.split("/images/")[1];
-    const projectEntry = projectAndFile.split("/")[0];
-    const basenameEntry = path.slice(
-      path.lastIndexOf("/") + 1,
-      path.lastIndexOf("-")
-    );
-    if (projectEntry === project && basenameEntry === basename) {
-      const variant = path.slice(
-        path.lastIndexOf("-") + 1,
-        path.lastIndexOf(".")
+    for (const [path, modulePath] of imageEntries) {
+      const projectDir = path.split('/images/')[1].split('/')[0];
+      const fileBase = path.slice(
+        path.lastIndexOf('/') + 1,
+        path.lastIndexOf('-')
       );
-      Object.assign(imageVariants, { [variant]: imageModules[path] });
+      if (projectDir === project && fileBase === basename) {
+        const variant = path.slice(
+          path.lastIndexOf('-') + 1,
+          path.lastIndexOf('.')
+        );
+        imageVariants[variant] = modulePath;
+      }
     }
-  });
 
-  if (currentProject !== project) {
-    projects = projects?.map((p) =>
-      p.slug === project ? { ...p, slideIndexStart: i } : p
-    );
-    currentProject = project;
+    if (currentProject !== project) {
+      projects = projects?.map((p) =>
+        p.slug === project ? { ...p, carouselIndexStart: carouselIndex } : p
+      );
+      currentProject = project;
+    }
+    images.push({
+      project,
+      filename: basename,
+      filePaths: imageVariants,
+      carouselIndex: carouselIndex,
+    });
+    carouselIndex++;
   }
-
-  images.push({
-    project: project,
-    filename: basename,
-    filePaths: imageVariants,
-    carouselIndex: i,
-  });
-
-  projects = projects.sort((a, b) => a.slideIndexStart - b.slideIndexStart);
 }
+
+// let currentProject: string;
+// let imageNameArray: { name: string; project: string }[] = [];
+// let currentImage: string;
+
+// for (const entry of imageEntries) {
+//   const path = entry[0];
+//   const projectAndFile = path.split("/images/")[1];
+//   const project = projectAndFile.split("/")[0];
+//   const basename = path.slice(path.lastIndexOf("/") + 1, path.lastIndexOf("-"));
+//   if (currentImage !== basename) {
+//     imageNameArray.push({ name: basename, project: project });
+//     currentImage = basename;
+//   }
+// }
+
+// for (let i = 0; i < imageNameArray.length; i++) {
+//   const project = imageNameArray[i].project;
+//   const basename = imageNameArray[i].name;
+
+//   let imageVariants: FilePaths = {};
+//   imageEntries.map((entry) => {
+//     const path = entry[0];
+//     const projectAndFile = path.split("/images/")[1];
+//     const projectEntry = projectAndFile.split("/")[0];
+//     const basenameEntry = path.slice(
+//       path.lastIndexOf("/") + 1,
+//       path.lastIndexOf("-")
+//     );
+//     if (projectEntry === project && basenameEntry === basename) {
+//       const variant = path.slice(
+//         path.lastIndexOf("-") + 1,
+//         path.lastIndexOf(".")
+//       );
+//       Object.assign(imageVariants, { [variant]: imageModules[path] });
+//     }
+//   });
+
+//   if (currentProject !== project) {
+//     projects = projects?.map((p) =>
+//       p.slug === project ? { ...p, slideIndexStart: i } : p
+//     );
+//     currentProject = project;
+//   }
+
+//   images.push({
+//     project: project,
+//     filename: basename,
+//     filePaths: imageVariants,
+//     carouselIndex: i,
+//   });
+
+// projects = projects.sort((a, b) => a.slideIndexStart - b.slideIndexStart);
+// }
 ---
 
+<!-- {
+  projects.map((i) => (
+    <div>
+      <ul>
+        <li> {i.slug} </li>
+        <li>{i.carouselIndexStart}</li>
+        {/* <li>{i.filePaths}</li>
+        <li>{i.carouselIndex}</li> */}
+      </ul>
+    </div>
+  ))
+}
+
+{
+  images.map((i) => (
+    <div>
+      <ul>
+        <li> {i.project} </li>
+        <li>{i.filename}</li>
+        <li>{i.filePaths}</li>
+        <li>{i.carouselIndex}</li>
+      </ul>
+    </div>
+  ))
+} -->
 <Layout projects={projects}>
   <GalleryClient client:only="react" images={images} />
 </Layout>
