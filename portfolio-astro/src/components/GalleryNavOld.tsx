@@ -1,152 +1,89 @@
-import EmblaCarousel, {
-  type EmblaCarouselType,
-  type EmblaOptionsType,
-} from 'embla-carousel';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Button } from './ui/button';
-import { cn } from '@/lib/utils';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useStore } from '@nanostores/react';
-import { emblaApi } from '@/lib/store';
+import { useEffect } from "react";
+import Swiper from "swiper";
+import "swiper/css";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useStore } from "@nanostores/react";
+import { swiperApi } from "@/lib/store";
 
 interface GalleryNavProps {
-  initialSlide: number;
+  projectParam: string;
+  imageParam: string;
 }
 
-const GalleryNavOld = (p: GalleryNavProps) => {
-  // const emblaApi = useRef<EmblaCarouselType>(null);
-  // const [emblaApi, setEmblaApi] = useState<EmblaCarouselType>();
-  const $emblaApi = useStore(emblaApi);
-  const [initialized, setInitialized] = useState(false);
-
-  const options: EmblaOptionsType = {
-    // loop: true,
-    // align: 'center' as const,
-    // skipSnaps: false,
-    // dragFree: false,
-    align: 'start',
-    // skipSnaps: false,
-    // dragFree: false,
-    startIndex: 0,
-  };
-
-  // useEffect(() => {
-  //   if (!$carouselApi || !document) return;
-  //   document.addEventListener('keydown', handleKeyDown);
-  //   $carouselApi.on('select', (event) => handleSlideChange(event));
-  //   return () => {
-  //     document.removeEventListener('keydown', handleKeyDown);
-  //     $carouselApi.off('select', handleSlideChange);
-  //   };
-  // }, [$carouselApi]);
+const GalleryNav = (p: GalleryNavProps) => {
+  const $swiperApi = useStore(swiperApi);
 
   useEffect(() => {
     if (!document) return;
-    const viewportNode: HTMLElement =
-      document.querySelector('.embla__viewport');
-    if (viewportNode) {
-      console.log('viewportNode: ', viewportNode);
-      emblaApi.set(EmblaCarousel(viewportNode, options));
-
-      // emblaApi.current = EmblaCarousel(viewportNode, options);
-      // setEmblaApi(EmblaCarousel(viewportNode, options));
-
-      setInitialized(true);
-    }
-    return () => {
-      // setEmblaApi(undefined);
-    };
+    swiperApi.set(
+      new Swiper(".swiper", {
+        centeredSlides: true,
+      }),
+    );
   }, [document]);
 
-  // const [emblaRef, emblaApi] = useMemo(() => {
-  //   if (!document) return;
-  //   return useEmblaCarousel(options);
-  // }, [document]);
-
-  // const emblaApi = useRef<any>(null);
-
-  // useEffect(() => {
-  //   const viewportNode: HTMLElement =
-  //     document.querySelector('.embla__viewport');
-  //   if (viewportNode) {
-  //     emblaApi.current = EmblaCarousel(viewportNode, options);
-  //   }
-  //   return () => {
-  //     emblaApi.current?.destroy();
-  //   };
-  // }, []);
+  useEffect(() => {}, [p.projectParam, p.imageParam]);
 
   useEffect(() => {
-    // console.log('emblaApi', emblaApi?.current);
-    console.log('emblaApi', emblaApi.value);
-  }, [emblaApi]);
+    if (!$swiperApi || !document) return;
+    document.addEventListener("keydown", handleKeyDown);
+    // $swiperApi.on("slideChange", (event) => handleSlideChange(event));
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      // $swiperApi.off("slideChange", handleSlideChange);
+    };
+  }, [$swiperApi]);
 
-  const scrollPrev = useCallback(() => {
-    // if (emblaApi) emblaApi.current.scrollPrev();
-    if ($emblaApi) $emblaApi.scrollPrev();
-  }, [$emblaApi]);
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (!$swiperApi) return;
+    event.preventDefault();
+    if (event.key === "ArrowLeft") {
+      $swiperApi.slidePrev();
+    }
+    if (event.key === "ArrowRight") {
+      $swiperApi.slideNext();
+    }
+  };
 
-  const scrollNext = useCallback(() => {
-    // if (emblaApi) emblaApi.current.scrollNext();
-    if ($emblaApi) $emblaApi.scrollNext();
-  }, [$emblaApi]);
+  const scrollPrev = () => {
+    if (!$swiperApi) return;
+    $swiperApi.slidePrev();
+  };
+
+  const scrollNext = () => {
+    if (!$swiperApi) return;
+    $swiperApi.slideNext();
+  };
 
   return (
     <>
-      {/* <button
-        className="embla__prev embla__nav__button embla__nav__button--prev"
-        onClick={scrollPrev}
-        // disabled={!isInitialized}
-      >
-        ← Prev
-      </button> */}
       <Button
-        data-slot="carousel-previous"
-        // variant={variant}
-        // size={size}
+        data-slot="swiper-button-prev"
         className={cn(
-          'inverted-icon embla__prev absolute -bottom-4 left-4 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full',
-          // orientation === 'horizontal'
-          //   ? '-bottom-4 left-4 -translate-y-1/2'
-          //   : 'top-4 left-1/2 -translate-x-1/2 rotate-90',
-          // className,
+          "inverted-icon absolute -bottom-4 left-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full",
         )}
-        // disabled={!emblaApi?.current?.canScrollPrev}
-        disabled={!$emblaApi?.canScrollPrev}
         onClick={scrollPrev}
-        // {...props}
       >
-        <ArrowLeft />
+        <ArrowLeft className="text-black" />
         <span className="sr-only">Previous slide</span>
       </Button>
+      <div className="absolute -bottom-4 left-4 z-0 h-16 w-16 -translate-y-1/2 rounded-full bg-white" />
 
-      {/* <button
-        className="embla__next embla__nav__button embla__nav__button--next"
-        onClick={scrollNext}
-        // disabled={!isInitialized}
-      >
-        Next →
-      </button> */}
       <Button
-        data-slot="embla__next"
-        // variant={variant}
-        // size={size}
+        data-slot="swiper-button-next"
         className={cn(
-          'inverted-icon embla__next absolute right-4 -bottom-4 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full',
-          // orientation === 'horizontal'
-          //   ? 'right-4 -bottom-4 -translate-y-1/2'
-          //   : 'bottom-4 left-1/2 -translate-x-1/2 rotate-90',
+          "inverted-icon absolute right-4 -bottom-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full",
         )}
-        // disabled={!emblaApi?.current?.canScrollNext}
-        disabled={!$emblaApi?.canScrollNext}
         onClick={scrollNext}
-        // {...props}
       >
-        <ArrowRight />
+        <ArrowRight className="text-black" />
         <span className="sr-only">Next slide</span>
       </Button>
+      <div className="absolute right-4 -bottom-4 z-0 h-16 w-16 -translate-y-1/2 rounded-full bg-white" />
     </>
   );
 };
 
-export default GalleryNavOld;
+export default GalleryNav;

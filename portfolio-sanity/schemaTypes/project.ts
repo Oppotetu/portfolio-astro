@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import { defineField, defineType } from 'sanity'
 
 export const projectType = defineType({
   name: 'project',
@@ -26,9 +26,9 @@ export const projectType = defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Profesjonell', value: 'professional'},
-          {title: 'Akademisk', value: 'academic'},
-          {title: 'Publikasjon', value: 'publication'},
+          { title: 'Profesjonell', value: 'professional' },
+          { title: 'Akademisk', value: 'academic' },
+          { title: 'Publikasjon', value: 'publication' },
         ],
         layout: 'radio',
       },
@@ -43,7 +43,7 @@ export const projectType = defineType({
       name: 'authors',
       title: 'Forfattere',
       type: 'array',
-      of: [{type: 'string'}],
+      of: [{ type: 'string', }],
     }),
     defineField({
       name: 'images',

@@ -12,7 +12,7 @@ interface GalleryProps {
   images: ImageEntry[];
 }
 
-const GalleryClient = (p: GalleryProps) => {
+const Gallery = (p: GalleryProps) => {
   const $swiperApi = useStore(swiperApi);
 
   useEffect(() => {
@@ -24,7 +24,6 @@ const GalleryClient = (p: GalleryProps) => {
     );
   }, [document]);
 
-  //   useEffect(() => {}, [p.projectParam, p.imageParam]);
 
   useEffect(() => {
     if (!$swiperApi || !document) return;
@@ -59,11 +58,6 @@ const GalleryClient = (p: GalleryProps) => {
 
   const getSrcSet = (image: ImageEntry) =>
     `${image.filePaths.w844} 844w, ${image.filePaths.w1024} 1024w, ${image.filePaths.w1600} 1600w, ${image.filePaths.w2560} 2560w`;
-
-  useEffect(() => {
-    if (!$swiperApi) return;
-    console.log('active', $swiperApi.activeIndex);
-  }, [$swiperApi]);
 
   return (
     <div className="swiper h-screen">
@@ -105,4 +99,4 @@ const GalleryClient = (p: GalleryProps) => {
   );
 };
 
-export default GalleryClient;
+export default Gallery;

@@ -4,11 +4,11 @@ export interface Project {
   slug: string;
   title: string;
   authors: string[];
-  oppsummering: string;
+  summary: string;
   squareFootage: number;
-  publisert: string;
+  publishedYear: number;
   assignmentType: string;
-  carouselIndexStart?: number;
+  slideIndexRange?: number[]
 }
 
 export interface FilePaths {

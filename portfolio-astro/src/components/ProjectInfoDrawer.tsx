@@ -1,7 +1,13 @@
-import { useState, type Dispatch, type SetStateAction } from 'react';
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from './ui/sheet';
 import TableList from './TableList';
 import type { Project } from '@/lib/types';
+
+const assignmentTranslator = {
+  professional: 'Profesjonell',
+  academic: 'Akademisk',
+  publication: 'Publication'
+}
 
 interface ProjectInfoDrawerProps {
   project: Project;
@@ -12,6 +18,21 @@ interface ProjectInfoDrawerProps {
 
 const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
   const [openProject, setOpenProject] = useState(false);
+
+  // useEffect(() => {
+  //   console.log('autohrs', p.project.authors);
+  // }, [p.project.authors]);
+
+  const authors = p.project?.authors?.filter((a) => a.trim().length > 0)
+
+  const spreadInto = (key: string, value: string | string[] | number) => {
+    if (typeof value === 'number') {
+      return value?.toString().length ? [`${key}: ${value}`] : []
+    } else {
+      return value?.length ? [`${key}: ${value}`] : []
+    }
+  }
+
   return (
     <Sheet
       open={p.openProject ?? openProject}
@@ -29,12 +50,13 @@ const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
       >
         <SheetHeader className="px-2">
           <TableList
-            header="JOHANNES ØRN DAGSSON ARKITEKT MNAL"
+            header={p.project?.title}
             items={[
-              'Uelands gate 57E',
-              'NO-0457 Oslo',
-              'post@dagsson.no',
-              'Org.nr: 922358141',
+              ...spreadInto('Publisert', p.project?.publishedYear),
+              ...spreadInto('Kvadratmeter', p.project?.squareFootage),
+              ...spreadInto('Medforfattere', authors?.join(', ')),
+              ...spreadInto('Oppdragstype', assignmentTranslator[p.project?.assignmentType]),
+              ...spreadInto('Oppsummering', p.project?.summary),
             ]}
           />
         </SheetHeader>
