@@ -60,7 +60,7 @@ const Gallery = (p: GalleryProps) => {
     `${image.filePaths.w844} 844w, ${image.filePaths.w1024} 1024w, ${image.filePaths.w1600} 1600w, ${image.filePaths.w2560} 2560w`;
 
   return (
-    <div className="swiper h-screen">
+    <div className="swiper">
       <div className="swiper-wrapper">
         {p.images.map((image, index) => (
           <img
@@ -69,7 +69,7 @@ const Gallery = (p: GalleryProps) => {
             sizes="100vw"
             src={image.filePaths.w1600}
             alt={image.filename}
-            className="swiper-slide h-auto max-h-screen w-auto max-w-screen object-contain"
+            className="swiper-slide screen-height-full h-auto w-auto max-w-screen object-contain"
           />
         ))}
       </div>

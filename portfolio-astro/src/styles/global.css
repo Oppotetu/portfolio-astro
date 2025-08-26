@@ -209,6 +209,11 @@
     padding-top: 0.1rem;
   }
 
+  .screen-height-full {
+    max-height: 100vh;
+    max-height: 100svh;
+  }
+
   .title-size {
     font-size: 3rem; /* text-5xl */
 
@@ -302,7 +307,6 @@
     border: 2px solid red;
     position: relative;
   }
-
 
   /* .embla__nav {
     position: absolute;
