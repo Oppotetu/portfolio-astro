@@ -1,10 +1,10 @@
 ---
 import NavDrawer from "@/components/NavDrawer";
 import "../styles/global.css";
+import ProjectInfoDrawer from "@/components/ProjectInfoDrawer";
 
 const { projects } = Astro.props;
 
-const projectParam = Astro.url.searchParams.get("project");
 ---
 
 <html lang="en">
@@ -13,7 +13,8 @@ const projectParam = Astro.url.searchParams.get("project");
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <NavDrawer client:load projects={projects} projectParam={projectParam} />
+    <NavDrawer client:load projects={projects}  />
+    <ProjectInfoDrawer client:load projects={projects} includeTrigger  />
     <slot />
   </body>
 </html>

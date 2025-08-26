@@ -9,7 +9,6 @@ import ProjectInfoDrawer from "./ProjectInfoDrawer";
 
 interface NavDrawerProps {
   projects: Project[];
-  projectParam: string;
 }
 
 export default function NavDrawer(p: NavDrawerProps) {
@@ -31,16 +30,13 @@ export default function NavDrawer(p: NavDrawerProps) {
   return (
     <>
       <Sheet open={openLeft} onOpenChange={setOpenLeft}>
-        <SheetTrigger className="absolute">
-          <div
-            className="inverted-text title title-left title-size z-30"
-            aria-hidden={true}
-          >
+        <SheetTrigger className="absolute" asChild>
+          <button className="inverted-text absolute title title-left title-size z-30" aria-hidden={true}>
             Dagsson
-          </div>
-          <h1 className="title title-left title-stroked title-size z-40">
+          </button>
+          {/* <h1 className="title title-left title-stroked title-size z-40">
             Dagsson
-          </h1>
+          </h1> */}
         </SheetTrigger>
         <SheetContent side="left" aria-describedby={undefined}>
           <SheetHeader className="px-2 flex flex-col h-full overflow-auto">
@@ -90,8 +86,7 @@ export default function NavDrawer(p: NavDrawerProps) {
       </Sheet>
       <AboutDrawer openAbout={openAbout} setOpenAbout={setOpenAbout} />
       <ProjectInfoDrawer
-        // project={p.projects?.find((pro) => pro.slug === p.projectParam)}
-        project={p.projects?.find((pro) => pro.slideIndexRange.includes($swiperApi?.activeIndex))}
+        projects={p.projects}
         openProject={openProject}
         setOpenProject={setOpenProject}
       />

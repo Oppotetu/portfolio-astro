@@ -60,8 +60,8 @@ const Gallery = (p: GalleryProps) => {
     `${image.filePaths.w844} 844w, ${image.filePaths.w1024} 1024w, ${image.filePaths.w1600} 1600w, ${image.filePaths.w2560} 2560w`;
 
   return (
-    <div className="swiper">
-      <div className="swiper-wrapper">
+    <div className="swiper h-full">
+      <div className="swiper-wrapper items-center">
         {p.images.map((image, index) => (
           <img
             key={`${image.project}-${index}`}
@@ -69,14 +69,14 @@ const Gallery = (p: GalleryProps) => {
             sizes="100vw"
             src={image.filePaths.w1600}
             alt={image.filename}
-            className="swiper-slide screen-height-full h-auto w-auto max-w-screen object-contain"
+            className="swiper-slide h-auto w-auto max-w-screen object-contain"
           />
         ))}
       </div>
 
       <Button
         className={cn(
-          'inverted-icon absolute -bottom-4 left-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full hover:bg-white focus:bg-white'
+          'inverted-icon sm:debug absolute -bottom-4 left-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full hover:bg-white focus:bg-white'
         )}
         onClick={scrollPrev}
       >

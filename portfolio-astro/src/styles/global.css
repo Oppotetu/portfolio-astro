@@ -139,16 +139,13 @@
     }
   }
 
-  html {
-    height: 100vh;
-    height: 100svh;
-  }
-
   body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     font-family: Helvetica, Arial, sans-serif;
     position: relative;
+    height: 100vh;
+    height: 100svh;
   }
 
   img,
@@ -198,7 +195,6 @@
 @layer components {
   .title {
     color: #000;
-    position: absolute;
     cursor: pointer;
   }
 }
@@ -207,11 +203,6 @@
   .row-height {
     padding-bottom: 1rem;
     padding-top: 0.1rem;
-  }
-
-  .screen-height-full {
-    max-height: 100vh;
-    max-height: 100svh;
   }
 
   .title-size {
@@ -226,14 +217,35 @@
     }
   }
 
+  @variants responsive {
+    .my-custom-utility {
+      /* Your custom styles here */
+      font-size: 1rem;
+    }
+    .my-custom-utility-md {
+      font-size: 1.5rem;
+    }
+  }
+
   .title-left {
-    top: -16px;
+    top: 0px;
     left: 0.25rem;
   }
 
   .title-right {
-    top: 2px;
-    right: 0.25rem;
+    @media (max-width: 768px) {
+      top: 2.5rem;
+      left: 0.25rem;
+    }
+    @media (min-width: 769px) {
+      top: 0.5rem;
+      right: 0.25rem;
+    }
+  }
+
+  .debug {
+    background: lime;
+    border: 3px solid red;
   }
 
   .title-stroked {
@@ -264,7 +276,6 @@
     background-clip: text;
     background-color: white;
     mix-blend-mode: difference;
-    position: absolute;
     text-align: center;
     text-justify: center;
   }

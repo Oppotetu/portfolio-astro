@@ -2,6 +2,8 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from './ui/sheet';
 import TableList from './TableList';
 import type { Project } from '@/lib/types';
+import { useStore } from '@nanostores/react';
+import { swiperApi } from '@/lib/store';
 
 const assignmentTranslator = {
   professional: 'Profesjonell',
@@ -10,7 +12,7 @@ const assignmentTranslator = {
 }
 
 interface ProjectInfoDrawerProps {
-  project: Project;
+  projects: Project[];
   includeTrigger?: boolean;
   openProject?: boolean;
   setOpenProject?: Dispatch<SetStateAction<boolean>>;
@@ -18,12 +20,11 @@ interface ProjectInfoDrawerProps {
 
 const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
   const [openProject, setOpenProject] = useState(false);
+  const $swiperApi = useStore(swiperApi);
 
-  // useEffect(() => {
-  //   console.log('autohrs', p.project.authors);
-  // }, [p.project.authors]);
+  const currentProject = p.projects?.find((pro) => pro.slideIndexRange.includes($swiperApi?.activeIndex))
 
-  const authors = p.project?.authors?.filter((a) => a.trim().length > 0)
+  const authors = currentProject?.authors?.filter((a) => a.trim().length > 0)
 
   const spreadInto = (key: string, value: string | string[] | number) => {
     if (typeof value === 'number') {
@@ -39,29 +40,31 @@ const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
       onOpenChange={p.setOpenProject ?? setOpenProject}
     >
       {p.includeTrigger && (
-        <SheetTrigger className="absolute right-2 z-30" asChild>
-          <button className="title-size text-xl">+</button>
+        <SheetTrigger className="absolute mt-7" asChild>
+          <button className="inverted-text absolute title title-right z-30" aria-hidden={true}>
+            {currentProject?.title}
+          </button>
         </SheetTrigger>
-      )}
+      )
+      }
       <SheetContent
-        // className="w-[60%] overflow-auto sm:max-w-[60%]"
         side="right"
         aria-describedby={undefined}
       >
         <SheetHeader className="px-2">
           <TableList
-            header={p.project?.title}
+            header={currentProject?.title}
             items={[
-              ...spreadInto('Publisert', p.project?.publishedYear),
-              ...spreadInto('Kvadratmeter', p.project?.squareFootage),
+              ...spreadInto('Publisert', currentProject?.publishedYear),
+              ...spreadInto('Kvadratmeter', currentProject?.squareFootage),
               ...spreadInto('Medforfattere', authors?.join(', ')),
-              ...spreadInto('Oppdragstype', assignmentTranslator[p.project?.assignmentType]),
-              ...spreadInto('Oppsummering', p.project?.summary),
+              ...spreadInto('Oppdragstype', assignmentTranslator[currentProject?.assignmentType]),
+              ...spreadInto('Oppsummering', currentProject?.summary),
             ]}
           />
         </SheetHeader>
       </SheetContent>
-    </Sheet>
+    </Sheet >
   );
 };
 export default ProjectInfoDrawer;
