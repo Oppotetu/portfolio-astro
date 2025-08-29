@@ -76,5 +76,5 @@ for (const {project, images: orderedNames} of imageOrder) {
 ))} -->
 
 <Layout projects={projects}>
-  <Gallery client:only="react" images={images} />
+  <Gallery client:only="react" projects={projects} images={images} />
 </Layout>

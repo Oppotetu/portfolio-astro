@@ -235,11 +235,11 @@
   .title-right {
     @media (max-width: 768px) {
       top: 2.5rem;
-      left: 0.25rem;
+      left: 0.45rem;
     }
     @media (min-width: 769px) {
       top: 0.5rem;
-      right: 0.25rem;
+      right: 0.75em;
     }
   }
 

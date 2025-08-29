@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "./ui/sheet";
 import { useStore } from "@nanostores/react";
 import { swiperApi } from "@/lib/store";
@@ -34,9 +34,6 @@ export default function NavDrawer(p: NavDrawerProps) {
           <button className="inverted-text absolute title title-left title-size z-30" aria-hidden={true}>
             Dagsson
           </button>
-          {/* <h1 className="title title-left title-stroked title-size z-40">
-            Dagsson
-          </h1> */}
         </SheetTrigger>
         <SheetContent side="left" aria-describedby={undefined}>
           <SheetHeader className="px-2 flex flex-col h-full overflow-auto">
@@ -48,7 +45,7 @@ export default function NavDrawer(p: NavDrawerProps) {
               }))}
             />
             <TableList
-              header="Akademisk prosjekter"
+              header="Akademiske prosjekter"
               items={academic?.map((pro) => ({
                 name: pro.title,
                 handleClick: () => handleProjectClick(pro),
@@ -65,14 +62,14 @@ export default function NavDrawer(p: NavDrawerProps) {
               <TableList
                 items={[
                   {
-                    name: "About me",
+                    name: "Om meg",
                     handleClick: () => {
                       setOpenLeft(false);
                       setOpenAbout(true);
                     },
                   },
                   {
-                    name: "About this project",
+                    name: "Om dette prosjektet",
                     handleClick: () => {
                       setOpenLeft(false);
                       setOpenProject(true);

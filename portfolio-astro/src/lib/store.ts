@@ -1,12 +1,7 @@
-import type { CarouselApi } from '@/components/ui/carousel';
-import type { EmblaCarouselType } from 'embla-carousel';
 import { atom } from 'nanostores';
 import type Swiper from 'swiper';
+import type { Project } from './types';
 
-export const carouselApi = atom<CarouselApi>();
+export const swiperApi = atom<Swiper | null>(null);
 
-export const swiperApi = atom<Swiper>();
-
-export const emblaApi = atom<EmblaCarouselType>();
-
-export const currentProject = atom('');
+export const currentProject = atom<Project | null>(null);

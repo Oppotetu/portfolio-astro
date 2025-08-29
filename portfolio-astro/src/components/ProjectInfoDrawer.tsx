@@ -1,9 +1,9 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useState, type Dispatch, type SetStateAction } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from './ui/sheet';
 import TableList from './TableList';
 import type { Project } from '@/lib/types';
 import { useStore } from '@nanostores/react';
-import { swiperApi } from '@/lib/store';
+import { currentProject } from '@/lib/store';
 
 const assignmentTranslator = {
   professional: 'Profesjonell',
@@ -20,11 +20,11 @@ interface ProjectInfoDrawerProps {
 
 const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
   const [openProject, setOpenProject] = useState(false);
-  const $swiperApi = useStore(swiperApi);
+  const $currentProject = useStore(currentProject);
 
-  const currentProject = p.projects?.find((pro) => pro.slideIndexRange.includes($swiperApi?.activeIndex))
+  // const currentProject = p.projects?.find((pro) => pro.slideIndexRange[0] <= $activeIndex && pro.slideIndexRange[1] >= $activeIndex)
 
-  const authors = currentProject?.authors?.filter((a) => a.trim().length > 0)
+  const authors = $currentProject?.authors?.filter((a) => a.trim().length > 0)
 
   const spreadInto = (key: string, value: string | string[] | number) => {
     if (typeof value === 'number') {
@@ -42,7 +42,7 @@ const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
       {p.includeTrigger && (
         <SheetTrigger className="absolute mt-7" asChild>
           <button className="inverted-text absolute title title-right z-30" aria-hidden={true}>
-            {currentProject?.title}
+            {$currentProject?.title}
           </button>
         </SheetTrigger>
       )
@@ -53,13 +53,13 @@ const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
       >
         <SheetHeader className="px-2">
           <TableList
-            header={currentProject?.title}
+            header={$currentProject?.title}
             items={[
-              ...spreadInto('Publisert', currentProject?.publishedYear),
-              ...spreadInto('Kvadratmeter', currentProject?.squareFootage),
+              ...spreadInto('Publisert', $currentProject?.publishedYear),
+              ...spreadInto('Kvadratmeter', $currentProject?.squareFootage),
               ...spreadInto('Medforfattere', authors?.join(', ')),
-              ...spreadInto('Oppdragstype', assignmentTranslator[currentProject?.assignmentType]),
-              ...spreadInto('Oppsummering', currentProject?.summary),
+              ...spreadInto('Oppdragstype', assignmentTranslator[$currentProject?.assignmentType]),
+              ...spreadInto('Oppsummering', $currentProject?.summary),
             ]}
           />
         </SheetHeader>

@@ -1,37 +1,46 @@
-import type { ImageEntry } from '@/lib/types';
+import type { ImageEntry, Project } from '@/lib/types';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useStore } from '@nanostores/react';
-import { swiperApi } from '@/lib/store';
+import { currentProject, swiperApi } from '@/lib/store';
 import { useEffect } from 'react';
 import Swiper from 'swiper';
 import 'swiper/css';
 
 interface GalleryProps {
   images: ImageEntry[];
+  projects: Project[]
 }
 
 const Gallery = (p: GalleryProps) => {
   const $swiperApi = useStore(swiperApi);
+  const $currentProject = useStore(currentProject);
 
   useEffect(() => {
     if (!document) return;
-    swiperApi.set(
-      new Swiper('.swiper', {
-        centeredSlides: true,
-      })
-    );
+    const swiper = new Swiper('.swiper', {
+      centeredSlides: true,
+      on: {
+        slideChange(sw) {
+          currentProject.set(p.projects?.find((pro) => pro.slideIndexRange[0] <= sw.activeIndex && pro.slideIndexRange[1] >= sw.activeIndex))
+        },
+        afterInit(sw) {
+          currentProject.set(p.projects?.find((pro) => pro.slideIndexRange[0] <= sw.activeIndex && pro.slideIndexRange[1] >= sw.activeIndex))
+        }
+      }
+    })
+    swiperApi.set(swiper)
+
+    return () => swiper.destroy()
   }, [document]);
 
 
   useEffect(() => {
     if (!$swiperApi || !document) return;
     document.addEventListener('keydown', handleKeyDown);
-    // $swiperApi.on("slideChange", (event) => handleSlideChange(event));
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      // $swiperApi.off("slideChange", handleSlideChange);
     };
   }, [$swiperApi]);
 

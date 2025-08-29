@@ -1,6 +1,6 @@
+import { useStore } from '@nanostores/react';
 import { SheetTitle } from './ui/sheet';
-
-
+import { currentProject } from '@/lib/store';
 
 interface ListItem {
   name: string;
@@ -13,6 +13,8 @@ interface TableListProps {
 }
 
 const TableList = (p: TableListProps) => {
+  const $currentProject = useStore(currentProject)
+
   return (
     <ul className="mt-8">
       {p.header && (
@@ -20,7 +22,7 @@ const TableList = (p: TableListProps) => {
           <SheetTitle className="text-2xl">{p.header}</SheetTitle>
         </li>
       )}
-      {p.items?.map((item, index) => (
+      {p.items?.map((item) => (
         <li
           key={typeof item === 'string' ? item : item.name}
           className="border-b-primary border-b-1 py-1"
@@ -30,10 +32,8 @@ const TableList = (p: TableListProps) => {
           ) : (
             <button onClick={item.handleClick} className="cursor-pointer">
               <SheetTitle
-                className="text-left text-lg"
-              // className={`text-left text-lg ${
-              //   $currentProject === item.name ? 'text-slate-500' : 'black'
-              // }`}
+                // className="text-left text-lg"
+                className={`text-left text-lg  ${$currentProject?.title === item.name ? 'text-slate-500' : 'text-black'}`}
               >
                 {item.name}
               </SheetTitle>
