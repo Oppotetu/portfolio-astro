@@ -32,8 +32,8 @@ const imageEntries = Object.entries(imageModules);
 let images: ImageEntry[] = [];
 let carouselIndex = 0;
 
-for (const {project, images: orderedNames} of imageOrder) {
-  const startIndex = carouselIndex; 
+for (const { project, images: orderedNames } of imageOrder) {
+  const startIndex = carouselIndex;
   for (const baseName of orderedNames) {
     let imageVariants: FilePaths = {};
 
@@ -52,7 +52,6 @@ for (const {project, images: orderedNames} of imageOrder) {
       }
     }
 
-
     images.push({
       project,
       filename: baseName,
@@ -61,12 +60,11 @@ for (const {project, images: orderedNames} of imageOrder) {
     });
   }
 
-  const endIndex = carouselIndex - 1; 
+  const endIndex = carouselIndex - 1;
   projects = projects.map((p) =>
-    p.slug === project ? { ...p, slideIndexRange: [startIndex, endIndex]} : p
-  )
+    p.slug === project ? { ...p, slideIndexRange: [startIndex, endIndex] } : p
+  );
 }
-
 ---
 
 <!-- {projects.sort((a, b) => a.slideIndexRange[0] - b.slideIndexRange[0]).map((p) => (
@@ -74,7 +72,7 @@ for (const {project, images: orderedNames} of imageOrder) {
     {p.slideIndexRange.join(', ')}
   </div>
 ))} -->
-
 <Layout projects={projects}>
   <Gallery client:only="react" projects={projects} images={images} />
+  {/* <CursorNavigation scrollPrev={scrollPrev} scrollNext={scrollNext} /> */}
 </Layout>

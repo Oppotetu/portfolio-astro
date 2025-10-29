@@ -7,10 +7,12 @@ import { currentProject, swiperApi } from '@/lib/store';
 import { useEffect } from 'react';
 import Swiper from 'swiper';
 import 'swiper/css';
+import CursorNavigation from './CursorNavigation';
+import CursorCircle from './CursorCircle';
 
 interface GalleryProps {
   images: ImageEntry[];
-  projects: Project[]
+  projects: Project[];
 }
 
 const Gallery = (p: GalleryProps) => {
@@ -23,18 +25,29 @@ const Gallery = (p: GalleryProps) => {
       centeredSlides: true,
       on: {
         slideChange(sw) {
-          currentProject.set(p.projects?.find((pro) => pro.slideIndexRange[0] <= sw.activeIndex && pro.slideIndexRange[1] >= sw.activeIndex))
+          currentProject.set(
+            p.projects?.find(
+              (pro) =>
+                pro.slideIndexRange[0] <= sw.activeIndex &&
+                pro.slideIndexRange[1] >= sw.activeIndex
+            )
+          );
         },
         afterInit(sw) {
-          currentProject.set(p.projects?.find((pro) => pro.slideIndexRange[0] <= sw.activeIndex && pro.slideIndexRange[1] >= sw.activeIndex))
-        }
-      }
-    })
-    swiperApi.set(swiper)
+          currentProject.set(
+            p.projects?.find(
+              (pro) =>
+                pro.slideIndexRange[0] <= sw.activeIndex &&
+                pro.slideIndexRange[1] >= sw.activeIndex
+            )
+          );
+        },
+      },
+    });
+    swiperApi.set(swiper);
 
-    return () => swiper.destroy()
+    return () => swiper.destroy();
   }, [document]);
-
 
   useEffect(() => {
     if (!$swiperApi || !document) return;
@@ -56,11 +69,13 @@ const Gallery = (p: GalleryProps) => {
   };
 
   const scrollPrev = () => {
+    console.log('scrolling prev');
     if (!$swiperApi) return;
     $swiperApi.slidePrev();
   };
 
   const scrollNext = () => {
+    console.log('scrolling next');
     if (!$swiperApi) return;
     $swiperApi.slideNext();
   };
@@ -74,8 +89,8 @@ const Gallery = (p: GalleryProps) => {
         {p.images.map((image, index) => (
           <img
             key={`${image.project}-${index}`}
-            srcSet={getSrcSet(image)}
             sizes="100vw"
+            srcSet={getSrcSet(image)}
             src={image.filePaths.w1600}
             alt={image.filename}
             className="swiper-slide h-auto w-auto max-w-screen object-contain"
@@ -83,7 +98,13 @@ const Gallery = (p: GalleryProps) => {
         ))}
       </div>
 
-      <Button
+      <CursorCircle
+        scrollNext={scrollNext}
+        scrollPrev={scrollPrev}
+        visibleOnMoveOnly
+      />
+
+      {/* <Button
         className={cn(
           'inverted-icon sm:debug absolute -bottom-4 left-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full hover:bg-white focus:bg-white'
         )}
@@ -92,7 +113,7 @@ const Gallery = (p: GalleryProps) => {
         <ArrowLeft className="text-black" />
         <span className="sr-only">Previous slide</span>
       </Button>
-      <div className="absolute -bottom-4 left-4 z-0 h-16 w-16 -translate-y-1/2 rounded-full bg-white"></div>
+      <div className="absolute -bottom-4 left-4 z-0 h-16 w-16 -translate-y-1/2 rounded-full bg-white" />
 
       <Button
         className={cn(
@@ -103,7 +124,7 @@ const Gallery = (p: GalleryProps) => {
         <ArrowRight className="text-black" />
         <span className="sr-only">Next slide</span>
       </Button>
-      <div className="absolute right-4 -bottom-4 z-0 h-16 w-16 -translate-y-1/2 rounded-full bg-white"></div>
+      <div className="absolute right-4 -bottom-4 z-0 h-16 w-16 -translate-y-1/2 rounded-full bg-white" /> */}
     </div>
   );
 };
