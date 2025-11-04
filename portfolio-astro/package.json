@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --open",
     "prebuild": "tsx scripts/fetchAndOptimize.ts",
     "build": "astro build",
     "preview": "astro preview",
@@ -26,7 +26,6 @@
     "clsx": "^2.1.1",
     "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
-    "gsap": "^3.13.0",
     "lucide-react": "^0.525.0",
     "nanostores": "^1.0.1",
     "react": "^19.1.0",

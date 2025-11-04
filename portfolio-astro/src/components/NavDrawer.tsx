@@ -6,6 +6,7 @@ import type { Project } from "@/lib/types";
 import AboutDrawer from "./AboutDrawer";
 import TableList from "./TableList";
 import ProjectInfoDrawer from "./ProjectInfoDrawer";
+import DirectionButton from "./DirectionButton/DirectionButton";
 
 interface NavDrawerProps {
   projects: Project[];
@@ -31,6 +32,7 @@ export default function NavDrawer(p: NavDrawerProps) {
     <>
       <Sheet open={openLeft} onOpenChange={setOpenLeft}>
         <SheetTrigger className="absolute" asChild>
+          {/* <DirectionButton label="Dagsson" /> */}
           <button className="inverted-text absolute title title-left title-size z-30" aria-hidden={true}>
             Dagsson
           </button>

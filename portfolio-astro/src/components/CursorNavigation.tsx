@@ -1,9 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { gsap } from 'gsap';
 import './CursorNavigation.css';
-import { useEffect } from 'react';
 
 interface CursorNavigationProps {
   scrollPrev: () => void;

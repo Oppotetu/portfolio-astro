@@ -98,33 +98,12 @@ const Gallery = (p: GalleryProps) => {
         ))}
       </div>
 
+
       <CursorCircle
         scrollNext={scrollNext}
         scrollPrev={scrollPrev}
-        visibleOnMoveOnly
       />
 
-      {/* <Button
-        className={cn(
-          'inverted-icon sm:debug absolute -bottom-4 left-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full hover:bg-white focus:bg-white'
-        )}
-        onClick={scrollPrev}
-      >
-        <ArrowLeft className="text-black" />
-        <span className="sr-only">Previous slide</span>
-      </Button>
-      <div className="absolute -bottom-4 left-4 z-0 h-16 w-16 -translate-y-1/2 rounded-full bg-white" />
-
-      <Button
-        className={cn(
-          'inverted-icon absolute right-4 -bottom-4 z-40 h-16 w-16 -translate-y-1/2 cursor-pointer rounded-full hover:bg-white focus:bg-white'
-        )}
-        onClick={scrollNext}
-      >
-        <ArrowRight className="text-black" />
-        <span className="sr-only">Next slide</span>
-      </Button>
-      <div className="absolute right-4 -bottom-4 z-0 h-16 w-16 -translate-y-1/2 rounded-full bg-white" /> */}
     </div>
   );
 };
