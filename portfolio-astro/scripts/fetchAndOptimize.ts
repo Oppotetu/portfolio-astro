@@ -89,18 +89,17 @@ async function run() {
 
   const imageArrays = await getImages();
 
-  const imageOrderManifest: { project: string; images: string[] }[] = []
+  const imageOrderManifest: { project: string; images: string[] }[] = [];
 
   for (const array of imageArrays) {
-    const projectImages: string[] = []
+    const projectImages: string[] = [];
     // imageOrderManifest[array.project] = [];
     for (const image of array.images) {
-      projectImages.push(image.alt)
+      projectImages.push(image.alt);
       const filename = path.basename(new URL(image.url).pathname);
       const rawPath = path.join(RAW_DIR, filename);
 
       // imageOrderManifest[array.project].push(image.alt);
-
 
       try {
         await downloadImage(image.url, rawPath);
@@ -116,8 +115,9 @@ async function run() {
         console.error(`✘ Failed to process ${filename}:`, error);
       }
     }
-    imageOrderManifest.push({ project: array.project, images: projectImages })
+    imageOrderManifest.push({ project: array.project, images: projectImages });
   }
+  fs.mkdirSync('./src/lib', { recursive: true });
   fs.writeFileSync(
     './src/lib/image-order.json',
     JSON.stringify(imageOrderManifest, null, 2)

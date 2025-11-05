@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface CursorCircleProps {
   scrollPrev: () => void;
@@ -8,6 +8,21 @@ interface CursorCircleProps {
 export default function CursorCircle(p: CursorCircleProps) {
   const elRef = useRef(null);
   const idleTimeout = useRef(null);
+  const [hidden, setHidden] = useState(false);
+
+  useEffect(() => {
+    const handleEnter = () => setHidden(true);
+    const handleLeave = () => setHidden(false);
+
+    // Custom global events
+    window.addEventListener('cursor:hide', handleEnter);
+    window.addEventListener('cursor:show', handleLeave);
+
+    return () => {
+      window.removeEventListener('cursor:hide', handleEnter);
+      window.removeEventListener('cursor:show', handleLeave);
+    };
+  }, []);
 
   useEffect(() => {
     const el = elRef.current;
@@ -54,6 +69,7 @@ export default function CursorCircle(p: CursorCircleProps) {
     transform: 'translate(-50%, -50%)',
     transition: 'opacity 160ms linear',
     willChange: 'left, top, opacity',
+    opacity: hidden ? 0 : 1,
   };
 
   return (
@@ -61,30 +77,27 @@ export default function CursorCircle(p: CursorCircleProps) {
       <div aria-hidden="true">
         <div
           ref={elRef}
-          className={
-            'pointer-events-none fixed rounded-full mix-blend-difference shadow-sm select-none bg-white h-7 w-7 z-[9999]'
-          }
+          className="pointer-events-none fixed z-[9999] h-7 w-7 rounded-full bg-white mix-blend-difference shadow-sm select-none"
           style={style}
         />
       </div>
       <button
         onClick={p.scrollPrev}
-        className="fixed top-0 left-0 z-50 h-screen w-1/2 bg-transparent cursor-none focus:outline-none focus:ring-0"
+        className="fixed top-0 left-0 z-50 hidden h-screen w-1/2 cursor-none bg-transparent focus:ring-0 focus:outline-none sm:block"
       />
       <button
         onClick={p.scrollNext}
-        className="fixed top-0 right-0 z-50 h-screen w-1/2 bg-transparent cursor-none focus:outline-none focus:ring-0"
+        className="fixed top-0 right-0 z-50 hidden h-screen w-1/2 cursor-none bg-transparent focus:ring-0 focus:outline-none sm:block"
       />
 
       <div
         style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: 'white',
+          backgroundColor: 'black',
           zIndex: -1,
         }}
       />
-
     </>
   );
 }

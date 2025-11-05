@@ -8,8 +8,8 @@ import { currentProject } from '@/lib/store';
 const assignmentTranslator = {
   professional: 'Profesjonell',
   academic: 'Akademisk',
-  publication: 'Publication'
-}
+  publication: 'Publication',
+};
 
 interface ProjectInfoDrawerProps {
   projects: Project[];
@@ -24,15 +24,15 @@ const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
 
   // const currentProject = p.projects?.find((pro) => pro.slideIndexRange[0] <= $activeIndex && pro.slideIndexRange[1] >= $activeIndex)
 
-  const authors = $currentProject?.authors?.filter((a) => a.trim().length > 0)
+  const authors = $currentProject?.authors?.filter((a) => a.trim().length > 0);
 
   const spreadInto = (key: string, value: string | string[] | number) => {
     if (typeof value === 'number') {
-      return value?.toString().length ? [`${key}: ${value}`] : []
+      return value?.toString().length ? [`${key}: ${value}`] : [];
     } else {
-      return value?.length ? [`${key}: ${value}`] : []
+      return value?.length ? [`${key}: ${value}`] : [];
     }
-  }
+  };
 
   return (
     <Sheet
@@ -41,16 +41,17 @@ const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
     >
       {p.includeTrigger && (
         <SheetTrigger className="absolute mt-7" asChild>
-          <button className="inverted-text absolute title title-right z-30" aria-hidden={true}>
+          <button
+            className="inverted-text title title-right absolute z-30"
+            aria-hidden={true}
+            onMouseEnter={() => window.dispatchEvent(new Event('cursor:hide'))}
+            onMouseLeave={() => window.dispatchEvent(new Event('cursor:show'))}
+          >
             {$currentProject?.title}
           </button>
         </SheetTrigger>
-      )
-      }
-      <SheetContent
-        side="right"
-        aria-describedby={undefined}
-      >
+      )}
+      <SheetContent side="right" aria-describedby={undefined}>
         <SheetHeader className="px-2">
           <TableList
             header={$currentProject?.title}
@@ -58,13 +59,16 @@ const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
               ...spreadInto('Publisert', $currentProject?.publishedYear),
               ...spreadInto('Kvadratmeter', $currentProject?.squareFootage),
               ...spreadInto('Medforfattere', authors?.join(', ')),
-              ...spreadInto('Oppdragstype', assignmentTranslator[$currentProject?.assignmentType]),
+              ...spreadInto(
+                'Oppdragstype',
+                assignmentTranslator[$currentProject?.assignmentType]
+              ),
               ...spreadInto('Oppsummering', $currentProject?.summary),
             ]}
           />
         </SheetHeader>
       </SheetContent>
-    </Sheet >
+    </Sheet>
   );
 };
 export default ProjectInfoDrawer;

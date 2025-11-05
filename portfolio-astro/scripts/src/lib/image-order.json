@@ -1,0 +1,92 @@
+[
+  {
+    "project": "104-kiosk-buerkliplatz",
+    "images": [
+      "illustration-01",
+      "site-sections",
+      "sections",
+      "stadthausanlage-sitepl",
+      "elevation-east",
+      "elevation-west",
+      "plan-01",
+      "plan-02"
+    ]
+  },
+  {
+    "project": "105-haslum-krematorium",
+    "images": [
+      "haslum-krematorium-01",
+      "haslum-krematorium-02",
+      "haslum-krematorium-03",
+      "haslum-krematorium-04"
+    ]
+  },
+  {
+    "project": "106-preikestolen",
+    "images": [
+      "besoekssenter-02",
+      "snitt-b-1-500",
+      "fasade-oest-1-500",
+      "plan-1-et-1-140",
+      "plan-2-et-1-140",
+      "site-plan-1-1000"
+    ]
+  },
+  {
+    "project": "320-atelier-de-vylder-vinck-taillieu",
+    "images": [
+      "painting-dunes",
+      "painting-forest",
+      "dune-axo-red",
+      "dune-plan",
+      "dune-section",
+      "forest-axo-red",
+      "forest-elevation",
+      "forest-plan"
+    ]
+  },
+  {
+    "project": "321-solo-house",
+    "images": [
+      "solo-house-01",
+      "view-01-red",
+      "view-02-red",
+      "situation-500-red",
+      "section-aa-100-02-red",
+      "plan-01-100",
+      "plan-02-100"
+    ]
+  },
+  {
+    "project": "322-church",
+    "images": [
+      "site-model-01",
+      "church-space-light",
+      "section-aa-100",
+      "section-typical-75",
+      "plan-01",
+      "site",
+      "draft"
+    ]
+  },
+  {
+    "project": "323-the-arcade",
+    "images": [
+      "model-photo-21",
+      "site-a0-6000",
+      "section-aa-a2-v1",
+      "diagram",
+      "plan-00-a1"
+    ]
+  },
+  {
+    "project": "things-we-won-in-the-fire-gallery-zwart-huis",
+    "images": [
+      "things-we-won-01",
+      "things-we-won-02",
+      "things-we-won-03",
+      "things-we-won-04",
+      "things-we-won-05"
+    ]
+  }
+]

@@ -67,12 +67,6 @@ for (const { project, images: orderedNames } of imageOrder) {
 }
 ---
 
-<!-- {projects.sort((a, b) => a.slideIndexRange[0] - b.slideIndexRange[0]).map((p) => (
-  <div>
-    {p.slideIndexRange.join(', ')}
-  </div>
-))} -->
 <Layout projects={projects}>
   <Gallery client:only="react" projects={projects} images={images} />
-  {/* <CursorNavigation scrollPrev={scrollPrev} scrollNext={scrollNext} /> */}
 </Layout>

@@ -1,13 +1,9 @@
 import type { ImageEntry, Project } from '@/lib/types';
-import { Button } from './ui/button';
-import { cn } from '@/lib/utils';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useStore } from '@nanostores/react';
 import { currentProject, swiperApi } from '@/lib/store';
 import { useEffect } from 'react';
 import Swiper from 'swiper';
 import 'swiper/css';
-import CursorNavigation from './CursorNavigation';
 import CursorCircle from './CursorCircle';
 
 interface GalleryProps {
@@ -98,12 +94,7 @@ const Gallery = (p: GalleryProps) => {
         ))}
       </div>
 
-
-      <CursorCircle
-        scrollNext={scrollNext}
-        scrollPrev={scrollPrev}
-      />
-
+      <CursorCircle scrollNext={scrollNext} scrollPrev={scrollPrev} />
     </div>
   );
 };
