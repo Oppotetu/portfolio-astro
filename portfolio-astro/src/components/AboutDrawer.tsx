@@ -9,14 +9,20 @@ interface AboutDrawerProps {
 
 const AboutDrawer = (p: AboutDrawerProps) => {
   const [openAbout, setOpenAbout] = useState(false);
+
   return (
-    <Sheet
-      open={p.openAbout ?? openAbout}
-      onOpenChange={p.setOpenAbout ?? setOpenAbout}
-    >
+    <Sheet open={openAbout} onOpenChange={setOpenAbout}>
+      <SheetTrigger className="absolute" asChild>
+        <button
+          className="inverted-text title title-left title-size absolute z-30 cursor-none transition-all duration-300 ease-in-out hover:-skew-x-4"
+          aria-hidden={true}
+        >
+          Dagsson
+        </button>
+      </SheetTrigger>
       <SheetContent
-        // className="w-[60%] overflow-auto sm:max-w-[60%]"
-        side="right"
+        side="left"
+        className="dark:bg-black"
         aria-describedby={undefined}
       >
         <SheetHeader className="px-2">

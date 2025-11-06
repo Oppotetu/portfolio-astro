@@ -6,7 +6,6 @@ import type { Project } from '@/lib/types';
 import AboutDrawer from './AboutDrawer';
 import TableList from './TableList';
 import ProjectInfoDrawer from './ProjectInfoDrawer';
-import DirectionButton from './DirectionButton/DirectionButton';
 
 interface NavDrawerProps {
   projects: Project[];

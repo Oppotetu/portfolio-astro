@@ -65,13 +65,11 @@ const Gallery = (p: GalleryProps) => {
   };
 
   const scrollPrev = () => {
-    console.log('scrolling prev');
     if (!$swiperApi) return;
     $swiperApi.slidePrev();
   };
 
   const scrollNext = () => {
-    console.log('scrolling next');
     if (!$swiperApi) return;
     $swiperApi.slideNext();
   };

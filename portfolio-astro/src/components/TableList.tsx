@@ -18,22 +18,21 @@ const TableList = (p: TableListProps) => {
   return (
     <ul className="mt-8">
       {p.header && (
-        <li className="border-t-1 pt-2 pb-5">
-          <SheetTitle className="text-2xl text-white">{p.header}</SheetTitle>
+        <li className="border-t-1 border-black pt-2 pb-5 dark:border-white">
+          <SheetTitle className="text-2xl">{p.header}</SheetTitle>
         </li>
       )}
       {p.items?.map((item) => (
         <li
           key={typeof item === 'string' ? item : item.name}
-          className="border-b-1 py-1"
+          className="border-b-1 border-black py-1 dark:border-white"
         >
           {typeof item === 'string' ? (
             <SheetTitle className="text-lg">{item}</SheetTitle>
           ) : (
             <button onClick={item.handleClick} className="cursor-pointer">
               <SheetTitle
-                // className="text-left text-lg"
-                className={`text-left text-lg ${$currentProject?.title === item.name ? 'text-slate-500' : 'text-white'}`}
+                className={`text-left text-lg ${$currentProject?.title === item.name ? 'text-slate-500' : 'text-black'}`}
               >
                 {item.name}
               </SheetTitle>

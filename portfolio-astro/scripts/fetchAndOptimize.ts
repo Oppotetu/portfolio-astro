@@ -93,13 +93,10 @@ async function run() {
 
   for (const array of imageArrays) {
     const projectImages: string[] = [];
-    // imageOrderManifest[array.project] = [];
     for (const image of array.images) {
       projectImages.push(image.alt);
       const filename = path.basename(new URL(image.url).pathname);
       const rawPath = path.join(RAW_DIR, filename);
-
-      // imageOrderManifest[array.project].push(image.alt);
 
       try {
         await downloadImage(image.url, rawPath);

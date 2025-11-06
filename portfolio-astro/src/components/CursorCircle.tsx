@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface CursorCircleProps {
   scrollPrev: () => void;
@@ -8,41 +8,28 @@ interface CursorCircleProps {
 export default function CursorCircle(p: CursorCircleProps) {
   const elRef = useRef(null);
   const idleTimeout = useRef(null);
-  const [hidden, setHidden] = useState(false);
-
-  useEffect(() => {
-    const handleEnter = () => setHidden(true);
-    const handleLeave = () => setHidden(false);
-
-    // Custom global events
-    window.addEventListener('cursor:hide', handleEnter);
-    window.addEventListener('cursor:show', handleLeave);
-
-    return () => {
-      window.removeEventListener('cursor:hide', handleEnter);
-      window.removeEventListener('cursor:show', handleLeave);
-    };
-  }, []);
 
   useEffect(() => {
     const el = elRef.current;
     if (!el) return;
 
-    // Start hidden
+    // hack for at cursorcircle skal gå over shadcn dark mode button
+    if (el.parentElement !== document.body) {
+      document.body.appendChild(el);
+    }
+
     el.style.opacity = '0';
 
-    // Center the circle on the pointer
     const handleMove = (e) => {
-      // Use pageX/Y to work with page scroll; clientX/Y also works if you want viewport coords
       const x = e.clientX;
       const y = e.clientY;
-      // Set left/top directly for pixel-perfect placement
-      // translate(-50%, -50%) in CSS keeps the element centered
+
       el.style.left = x + 'px';
       el.style.top = y + 'px';
 
       el.style.opacity = '1';
-      // hide after 1200ms of inactivity
+
+      // gjem cursorcircle etter 1200 ms
       if (idleTimeout.current) clearTimeout(idleTimeout.current);
       idleTimeout.current = setTimeout(() => {
         el.style.opacity = '0';
@@ -69,7 +56,6 @@ export default function CursorCircle(p: CursorCircleProps) {
     transform: 'translate(-50%, -50%)',
     transition: 'opacity 160ms linear',
     willChange: 'left, top, opacity',
-    opacity: hidden ? 0 : 1,
   };
 
   return (
@@ -90,14 +76,7 @@ export default function CursorCircle(p: CursorCircleProps) {
         className="fixed top-0 right-0 z-50 hidden h-screen w-1/2 cursor-none bg-transparent focus:ring-0 focus:outline-none sm:block"
       />
 
-      <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'black',
-          zIndex: -1,
-        }}
-      />
+      <div className="fixed inset-0 -z-10 bg-white dark:bg-black" />
     </>
   );
 }

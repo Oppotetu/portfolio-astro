@@ -22,8 +22,6 @@ const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
   const [openProject, setOpenProject] = useState(false);
   const $currentProject = useStore(currentProject);
 
-  // const currentProject = p.projects?.find((pro) => pro.slideIndexRange[0] <= $activeIndex && pro.slideIndexRange[1] >= $activeIndex)
-
   const authors = $currentProject?.authors?.filter((a) => a.trim().length > 0);
 
   const spreadInto = (key: string, value: string | string[] | number) => {
@@ -42,16 +40,18 @@ const ProjectInfoDrawer = (p: ProjectInfoDrawerProps) => {
       {p.includeTrigger && (
         <SheetTrigger className="absolute mt-7" asChild>
           <button
-            className="inverted-text title title-right absolute z-30"
+            className="inverted-text title title-right absolute z-30 cursor-none transition-all duration-300 ease-in-out hover:-skew-x-12"
             aria-hidden={true}
-            onMouseEnter={() => window.dispatchEvent(new Event('cursor:hide'))}
-            onMouseLeave={() => window.dispatchEvent(new Event('cursor:show'))}
           >
             {$currentProject?.title}
           </button>
         </SheetTrigger>
       )}
-      <SheetContent side="right" aria-describedby={undefined}>
+      <SheetContent
+        side="right"
+        className="dark:bg-black"
+        aria-describedby={undefined}
+      >
         <SheetHeader className="px-2">
           <TableList
             header={$currentProject?.title}
