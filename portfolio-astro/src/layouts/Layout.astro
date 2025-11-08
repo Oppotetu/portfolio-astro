@@ -40,7 +40,7 @@ const { projects } = Astro.props;
   </head>
   <body>
     <AboutDrawer client:load />
-    <ProjectInfoDrawer client:load projects={projects} includeTrigger />
+    <ProjectInfoDrawer client:only="react" projects={projects} includeTrigger />
     <slot />
     <ModeToggle client:load />
   </body>

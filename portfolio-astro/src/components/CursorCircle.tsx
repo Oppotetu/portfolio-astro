@@ -63,7 +63,7 @@ export default function CursorCircle(p: CursorCircleProps) {
       <div aria-hidden="true">
         <div
           ref={elRef}
-          className="pointer-events-none fixed z-[9999] h-7 w-7 rounded-full bg-white mix-blend-difference shadow-sm select-none"
+          className="pointer-events-none fixed z-[9999] hidden h-7 w-7 rounded-full bg-white mix-blend-difference shadow-sm select-none sm:block"
           style={style}
         />
       </div>
